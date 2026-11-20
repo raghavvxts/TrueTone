@@ -1,0 +1,26 @@
+{
+  "dataset": "MUStARD",
+  "training_examples": 690,
+  "classifier": "LogisticRegressionCV",
+  "models": {
+    "Text + speech": [
+      "text_emb",
+      "text_sent",
+      "wavlm",
+      "prosody",
+      "speech_emo",
+      "mismatch"
+    ],
+    "Speech reference": [
+      "wavlm",
+      "prosody",
+      "speech_emo"
+    ]
+  },
+  "feature_signature": "1c3258245a11a69549da4634f769fcf3d5e1ae21ee9badcf3c4503e84b3163e3",
+  "sha256": "9671ce578239a036bc78630e19ff07f3440b42495173259db63d93757c7c7630",
+  "sklearn_version": "1.9.1",
+  "threshold": 0.5,
+  "transcription": "openai/whisper-tiny.en",
+  "note": "Final refits on all examples; live microphone/ASR accuracy has not been benchmarked."
+}

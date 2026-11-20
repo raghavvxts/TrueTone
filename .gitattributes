@@ -3,3 +3,4 @@
 *.npz binary
 *.zip binary
 *.pptx binary
+*.joblib binary
