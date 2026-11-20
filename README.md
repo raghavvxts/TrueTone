@@ -52,6 +52,6 @@ On 20 November 2026, the complete notebook ran successfully on local CPU in 10.8
 ## Paper and presentation
 
 - [IEEE paper PDF](paper/TrueTone_IEEE_Paper.pdf)
-- [Corrected presentation](presentations/TrueTone_Final_Presentation.pptx)
+- [Final presentation](presentations/TrueTone_Final_Presentation.pptx)
 
 The `paper/` folder contains only the final PDF, based on the completed local MUStARD run. The editable manuscript is maintained separately in Overleaf.
