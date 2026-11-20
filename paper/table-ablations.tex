@@ -1,0 +1,18 @@
+\begin{table}[t]
+\caption{LR ablations. CV F1 is the mean over 15 folds. Cross-show F1 is pooled.}
+\label{tab:ablations}
+\centering
+\begin{tabular}{lcc}
+\hline
+Feature configuration & CV F1 & Cross-show F1 \\
+\hline
+All blocks & 0.742 & 0.645 \\
+Without mismatch & 0.743 & 0.644 \\
+Without prosody & 0.747 & 0.624 \\
+Without WavLM & 0.731 & 0.626 \\
+Prosody only & 0.699 & 0.636 \\
+Sentiment, emotion, mismatch & 0.624 & 0.607 \\
+Text with context & 0.670 & 0.539 \\
+\hline
+\end{tabular}
+\end{table}
