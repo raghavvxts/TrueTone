@@ -102,3 +102,9 @@ footer { display: none !important; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+#voice-profile { border-top: 1px solid var(--tt-line); padding-top: 16px; }
+#voice-profile:empty, #emotion-scores:has(.empty) { display: none !important; }
+#voice-profile h3 { font-family: var(--tt-display); font-size: 25px; font-weight: 400; color: var(--tt-ink); }
+#voice-profile p { font-size: 14px; line-height: 1.6; color: var(--tt-muted); }
+#emotion-scores { background: transparent !important; border: none !important; }

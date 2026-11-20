@@ -14,14 +14,14 @@ def predictor():
 
 def analyze(audio, transcript, model, progress=gr.Progress()):
     try:
-        score, words, duration = predictor().predict(audio, transcript, model, progress)
+        score, words, duration, voice, emotion_scores = predictor().predict(audio, transcript, model, progress)
     except (ValueError, RuntimeError, OSError) as error:
         raise gr.Error(str(error)) from error
     verdict = 'Sarcastic' if score >= .5 else 'Not sarcastic'
     details = (f'### {verdict}\n'
                f'**Sarcasm score:** {score:.1%}\n\n'
                f'{duration:.1f}s recording · {model}')
-    return {'Sarcastic': score, 'Not sarcastic': 1-score}, words, details
+    return {'Sarcastic': score, 'Not sarcastic': 1-score}, words, details, voice, emotion_scores
 
 
 CSS = (Path(__file__).resolve().parent / 'ui/style.css').read_text()
@@ -56,19 +56,24 @@ def create_app():
                 with gr.Row():
                     submit = gr.Button('Analyze recording', variant='primary', scale=3, min_width=180, elem_id='analyze')
                     clear = gr.ClearButton(value='Clear', scale=1, min_width=80, elem_id='clear')
-                gr.Markdown('Stop recording before analyzing. Use the transcript option to correct any speech recognition errors.')
+                gr.Markdown('Stop recording before analyzing. Allow microphone access in your browser. Use the transcript option to correct any speech recognition errors.')
             with gr.Column(min_width=280, elem_id='output-pane'):
                 gr.HTML('<div class="tt-section-heading"><h2>The model’s reading</h2><span>Model estimate</span></div>')
                 result = gr.Markdown(EMPTY_RESULT, elem_id='result')
                 scores = gr.Label(label='Model scores', num_top_classes=2, show_heading=False, container=False, elem_id='scores')
+                voice = gr.Markdown('', elem_id='voice-profile')
+                emotion_scores = gr.Label(label='Voice emotion scores', num_top_classes=4, show_heading=False, container=False, elem_id='emotion-scores')
                 recognized = gr.Textbox(label='Transcript used', placeholder='The spoken words will appear here.', interactive=False, lines=2, elem_id='recognized')
-        gr.HTML("""<div class="tt-footnote"><p>Research demo trained on 690 MUStARD clips. Scores are estimates; context, accents and background noise can change the reading.</p>
+        gr.HTML("""<div class="tt-footnote"><p>MUStARD++ interface preview. Integration of the externally trained model is pending. Scores currently come from the local demo model.</p>
           <p class="tt-local">Audio processed locally<br>First use downloads pretrained models</p></div>""")
         with gr.Accordion('About the model and its limits', open=False, elem_id='method'):
-            gr.Markdown('Local speech recognition supplies the transcript. The research notebook’s frozen encoders extract speech, prosody, emotion, text and sentiment features. A final logistic-regression classifier predicts sarcasm at a 0.5 threshold. Scores are uncalibrated. The speech reference also uses transcript word counts for speaking-rate features. This is a recording-based demo, not continuous streaming.\n\n[Project and evaluation results](https://github.com/raghavvxts/TrueTone)')
-        prediction = submit.click(analyze, inputs=[audio, transcript, model], outputs=[scores, recognized, result], api_name='analyze', concurrency_limit=1)
-        audio.change(lambda: ('', None, '', EMPTY_RESULT), outputs=[transcript, scores, recognized, result], cancels=[prediction], queue=False)
-        clear.add([audio, transcript, scores, recognized, result])
+            gr.Markdown('The local demo currently uses a classifier trained on the original MUStARD dataset. The externally trained MUStARD++ model has not yet been connected on this machine.\n\nLocal speech recognition supplies the transcript. The research notebook’s frozen encoders extract speech, prosody, emotion, text and sentiment features. A final logistic-regression classifier predicts sarcasm at a 0.5 threshold. Scores are uncalibrated. The speech reference also uses transcript word counts for speaking-rate features. This is a recording-based demo, not continuous streaming.\n\n[Project and evaluation results](https://github.com/raghavvxts/TrueTone)')
+        outputs = [scores, recognized, result, voice, emotion_scores]
+        prediction = submit.click(analyze, inputs=[audio, transcript, model], outputs=outputs, api_name='analyze', concurrency_limit=1)
+        audio.change(lambda: ('', None, '', EMPTY_RESULT, '', None), outputs=[transcript, *outputs], cancels=[prediction], queue=False)
+        for control in (transcript, model):
+            control.input(lambda: (None, '', EMPTY_RESULT, '', None), outputs=outputs, cancels=[prediction], queue=False)
+        clear.add([audio, transcript, *outputs])
     return demo
 
 

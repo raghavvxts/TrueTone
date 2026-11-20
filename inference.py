@@ -61,6 +61,8 @@ def feature_runtime(cache_dir):
 def prepare_audio(audio):
     if audio is None:
         raise ValueError('Record or upload an audio clip first.')
+    if not isinstance(audio, (tuple, list)) or len(audio) != 2:
+        raise ValueError('Use a valid audio recording.')
     sr, raw = audio
     raw = np.asarray(raw)
     if not isinstance(sr, (int, np.integer)) or not 8000 <= sr <= 192000:
@@ -70,7 +72,12 @@ def prepare_audio(audio):
     duration = raw.shape[0] / sr
     if not 1 <= duration <= 30:
         raise ValueError('Use a recording between 1 and 30 seconds.')
-    if np.issubdtype(raw.dtype, np.integer):
+    if raw.dtype.kind not in 'iuf':
+        raise ValueError('Audio contains invalid sample values.')
+    if np.issubdtype(raw.dtype, np.unsignedinteger):
+        midpoint = (np.iinfo(raw.dtype).max + 1) / 2
+        samples = (raw.astype(np.float32) - midpoint) / midpoint
+    elif np.issubdtype(raw.dtype, np.integer):
         limit = max(abs(np.iinfo(raw.dtype).min), np.iinfo(raw.dtype).max)
         samples = raw.astype(np.float32) / limit
     else:
@@ -79,9 +86,32 @@ def prepare_audio(audio):
         raise ValueError('Audio contains invalid sample values.')
     if samples.ndim == 2:
         samples = samples.mean(axis=1)
-    if np.sqrt(np.mean(samples**2)) < 1e-4:
+    if np.sqrt(np.mean((samples - samples.mean())**2)) < 1e-4:
         raise ValueError('The recording is silent or too quiet. Check your microphone.')
     return librosa.resample(samples, orig_sr=sr, target_sr=16000).astype(np.float32)
+
+
+def describe_voice(emotion, labels, prosody):
+    """Describe delivery using the existing emotion encoder, without identity guesses."""
+    names = {'neu': 'Neutral', 'hap': 'Happy', 'ang': 'Angry', 'sad': 'Sad'}
+    values = np.asarray(emotion, dtype=float).reshape(-1)
+    if (len(values) != len(labels) or set(labels) != set(names) or
+            not np.isfinite(values).all() or np.any(values < 0) or
+            not np.isclose(values.sum(), 1, atol=.01)):
+        raise RuntimeError('Invalid voice emotion scores.')
+    order = np.argsort(values)[::-1]
+    best, second = order[:2]
+    uncertain = values[best] < .6 or values[best] - values[second] < .15
+    title = f'Mixed / uncertain (closest: {names[labels[best]].lower()})' if uncertain else names[labels[best]]
+    pitch = prosody.get('f0_mean', 0)
+    pitch_text = (f'{pitch:.0f} Hz estimated mean pitch' if pitch > 0 and
+                  prosody.get('f0_voiced_frac', 0) >= .1 else 'Pitch unavailable')
+    pace = prosody.get('words_per_sec', 0) * 60
+    description = (f'### Voice tone: {title}\n'
+                   f'**Top emotion score:** {values[best]:.1%}\n\n'
+                   f'{pitch_text} · {pace:.0f} words/min estimated from transcript\n\n'
+                   'Delivery estimate only. Emotion scores are uncalibrated; they do not establish the speaker’s actual feelings.')
+    return description, {names[label]: float(value) for label, value in zip(labels, values)}
 
 
 def fit_bundle(features, labels, config, prosody_names, emotion_labels, ids, path=MODEL_PATH):
@@ -186,4 +216,5 @@ class Predictor:
             progress(.95, desc='Running the trained classifier')
             probability = predict_features(self.bundle, features, model_name)
         progress(1, desc='Complete')
-        return probability, transcript, len(samples)/16000
+        voice, emotion_scores = describe_voice(emotion, labels, prosody)
+        return probability, transcript, len(samples)/16000, voice, emotion_scores

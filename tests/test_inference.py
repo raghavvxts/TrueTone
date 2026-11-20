@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 import numpy as np
 
-from inference import BLOCKS, Predictor, fit_bundle, predict_features, prepare_audio
+from inference import BLOCKS, Predictor, fit_bundle, predict_features, prepare_audio, describe_voice
 
 
 class InferenceTests(unittest.TestCase):
@@ -19,10 +19,27 @@ class InferenceTests(unittest.TestCase):
         self.assertLessEqual(float(np.max(np.abs(converted))), 1)
         for audio in [None, (16000, np.zeros(16000)), (16000, np.ones(16000)*np.nan),
                       (16000, np.ones(16000*31)), (0, wave), (16000, np.zeros((16000, 3))),
-                      (16000, np.ones(16000)*2)]:
+                      (16000, np.ones(16000)*2), (16000, np.ones(16000)*.2),
+                      (16000, np.ones(16000, dtype=complex)), (16000, np.full(16000, 128, dtype=np.uint8))]:
             with self.subTest(audio=str(type(audio))):
                 with self.assertRaises(ValueError):
                     prepare_audio(audio)
+
+    def test_unsigned_pcm_and_voice_description(self):
+        wave = (128 + 60*np.sin(2*np.pi*180*np.arange(16000)/16000)).astype(np.uint8)
+        self.assertLess(abs(float(prepare_audio((16000, wave)).mean())), .01)
+        labels = ['neu', 'hap', 'ang', 'sad']
+        text, scores = describe_voice([[.1, .7, .1, .1]], labels,
+                                     {'f0_mean': 180, 'f0_voiced_frac': .8, 'words_per_sec': 2})
+        self.assertIn('Voice tone: Happy', text)
+        self.assertIn('180 Hz', text)
+        self.assertIn('120 words/min', text)
+        self.assertEqual(scores['Happy'], .7)
+        text, _ = describe_voice([[.3, .3, .2, .2]], labels, {})
+        self.assertIn('Mixed / uncertain', text)
+        self.assertIn('Pitch unavailable', text)
+        with self.assertRaises(RuntimeError):
+            describe_voice([[float('nan')]*4], labels, {})
 
     def test_bundle_roundtrip_and_prediction(self):
         rng = np.random.default_rng(42)

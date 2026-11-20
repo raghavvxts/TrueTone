@@ -83,3 +83,5 @@ On 20 November 2026, the complete notebook ran successfully on local CPU in 10.8
 The `paper/` folder contains only the final PDF, based on the completed local MUStARD run. The editable manuscript is maintained separately in Overleaf.
 
 UI colors, spacing and typography are defined in `ui/style.css`; design conventions are documented in `ui/STYLE_GUIDE.md`. Both light and dark modes use the same shared design tokens.
+
+Each analyzed clip also reports estimated voice delivery (neutral, happy, angry, or sad), all four emotion scores, mean pitch when measurable, and transcript-based speaking pace. Ambiguous scores are marked mixed/uncertain. These are uncalibrated model estimates, not evidence of a speaker’s actual feelings or identity. Changing audio, transcript, or model clears the previous result.
