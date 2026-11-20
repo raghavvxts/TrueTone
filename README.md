@@ -6,7 +6,7 @@ Research pipeline for multimodal sarcasm detection using utterance text and spee
 
 - [Research notebook](TrueTone.ipynb)
 - [IEEE paper](paper/TrueTone_IEEE_Paper.pdf)
-- [Presentation](presentations/TrueTone_Final_Presentation.pptx)
+- [Presentation](presentations/TrueTone-PID-02.pptx)
 - [Completed experiment](results/local-run-2026-11-20/)
 
 ## Microphone demo
@@ -76,6 +76,6 @@ On 20 November 2026, the complete notebook ran successfully on local CPU in 10.8
 ## Paper and presentation
 
 - [IEEE paper PDF](paper/TrueTone_IEEE_Paper.pdf)
-- [Final presentation](presentations/TrueTone_Final_Presentation.pptx)
+- [Final presentation](presentations/TrueTone-PID-02.pptx)
 
 The `paper/` folder contains only the final PDF, based on the completed local MUStARD run. The editable manuscript is maintained separately in Overleaf.
