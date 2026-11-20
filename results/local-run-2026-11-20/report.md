@@ -1,4 +1,4 @@
-# SarcasTone: Multimodal Sarcasm Detection Using Text and Speech Prosody
+# TrueTone: Multimodal Sarcasm Detection Using Text and Speech Prosody
 *Auto-generated 2026-11-20 17:46 — numbers below come from this run; re-read them before copying into the paper.*
 
 ## Research question

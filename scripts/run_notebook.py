@@ -6,10 +6,10 @@ import nbformat
 from nbclient import NotebookClient
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--output', type=Path, default=Path('sarcastone/executed.ipynb'))
+parser.add_argument('--output', type=Path, default=Path('truetone/executed.ipynb'))
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
-notebook = nbformat.read(root / 'SarcasTone_vastaiClaude-2.ipynb', as_version=4)
+notebook = nbformat.read(root / 'TrueTone.ipynb', as_version=4)
 args.output.parent.mkdir(parents=True, exist_ok=True)
 def report_cell(cell, cell_index, **kwargs):
     print(f"Starting cell {cell_index}: {''.join(cell.source).splitlines()[0][:100]}", flush=True)
@@ -21,6 +21,6 @@ def save_progress(cell, cell_index, **kwargs):
 
 
 try:
-    NotebookClient(notebook, timeout=None, kernel_name='sarcastone', on_cell_execute=report_cell, on_cell_executed=save_progress, resources={'metadata': {'path': str(root)}}).execute()
+    NotebookClient(notebook, timeout=None, kernel_name='truetone', on_cell_execute=report_cell, on_cell_executed=save_progress, resources={'metadata': {'path': str(root)}}).execute()
 finally:
     nbformat.write(notebook, args.output)

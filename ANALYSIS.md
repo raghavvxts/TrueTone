@@ -17,7 +17,7 @@ The supplied archive includes 14 model variants, fold metrics, OOF predictions a
 7. Early-fusion LR and the LR no-mismatch ablation are identical configurations and yield duplicate results. They are retained as named comparisons.
 8. Model identifiers are not pinned to immutable Hugging Face revisions; dependency versions in the supplied report describe its original environment. Fresh installations may differ. The tested local environment is captured separately in `requirements-verified.txt`.
 9. Default parallel classifier workers are capped at eight and can be overridden. Torch was missing from notebook installation dependencies and is now explicit.
-10. Full pipeline automation saves the executed notebook even when a cell fails. The source notebook's historical outputs were cleared; extracted results are preserved unchanged.
+10. Full pipeline automation saves the executed notebook even when a cell fails. The source notebook's historical outputs were cleared; numerical results are preserved unchanged.
 
 ## Interpretation of supplied results
 
@@ -27,14 +27,16 @@ Mean random-split F1 peaks at 0.762 for gated fusion without mismatch, versus 0.
 
 Local tests execute notebook functions on synthetic audio/features and validate saved artifact structure and fold-summary consistency. Full encoder downloads, all 690 clips, complete repeated-CV training and report regeneration are not covered by these tests. Historical metrics must not be presented as newly reproduced results after these corrections.
 
-Local verification: Python 3.12.14 on macOS arm64; five unittest cases passed (16.346 seconds). Notebook schema/code compilation, runner help and script compilation also passed. The original five-page PDF was text-extracted and its first page visually inspected; no PDF content was changed.
+Local verification: Python 3.12.14 on macOS arm64; five unittest cases passed (16.346 seconds). Notebook schema/code compilation, runner help and script compilation also passed. The original five-page PDF was text-extracted and its first page visually inspected; the initial inspection made no PDF changes. Report titles and footers were later updated to the TrueTone branding without changing numerical content.
 
 ## Complete local run: 20 November 2026
 
 Completed the full corrected notebook on macOS arm64 CPU, using four classifier workers, in 10.8 minutes. Downloaded all 690 MUStARD clips; extracted audio, all encoder blocks and 58 prosody features. All 15 code cells executed without errors. Both protocols completed: 210 repeated-CV fold/model rows and 28 held-out-show rows, covering 14 model variants. Generated fold means match their saved summaries. The generated five-page PDF was rendered and visually inspected.
 
-Fresh outputs and the executed notebook are in `results/local-run-2026-11-20/`; original artifacts remain in the parent `results/` directory. The source notebook still has clean outputs. Dataset/model downloads and feature caches remain local under ignored `sarcastone/`.
+Fresh outputs and the executed notebook are in `results/local-run-2026-11-20/`; original artifacts remain in the parent `results/` directory. The source notebook still has clean outputs. Dataset/model downloads and feature caches remain local under ignored `truetone/`.
 
 Best mean CV F1: gated multimodal with mismatch, 0.7655 (fold standard deviation 0.0476). Best pooled held-out-show F1: LR speech-only, 0.6584. This run does not establish that explicit mismatch improves cross-show generalisation. Statistical and protocol caveats above still apply.
 
 The first execution exposed missing pip in the uv environment; pip is now an explicit setup dependency. The runner now logs cell starts/completions and saves progress after each completed cell. Its callbacks were separately checked by executing and saving a small notebook. No cloud machine was provisioned; the report's Vast cost is a configured estimate, not actual local spend.
+
+Project branding is standardised to TrueTone across source files, report titles, PDF metadata, presentation notes and output paths. The source notebook is `TrueTone.ipynb`; runtime configuration uses `TRUETONE_DIR`, `TRUETONE_JOBS` and the `truetone` Jupyter kernel. Display paths in the archived executed notebook were updated to match the renamed project.

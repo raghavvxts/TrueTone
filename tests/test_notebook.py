@@ -11,7 +11,7 @@ import soundfile as sf
 import torch
 
 ROOT = Path(__file__).resolve().parents[1]
-NOTEBOOK = json.loads((ROOT / 'SarcasTone_vastaiClaude-2.ipynb').read_text())
+NOTEBOOK = json.loads((ROOT / 'TrueTone.ipynb').read_text())
 
 
 def source(i):
