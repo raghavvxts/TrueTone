@@ -3,4 +3,3 @@
 *.npz binary
 *.zip binary
 *.pptx binary
-paper/IEEEtran.cls whitespace=-blank-at-eol,-blank-at-eof

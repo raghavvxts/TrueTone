@@ -30,9 +30,8 @@ This executes actual notebook prosody extraction on generated tone/silence audio
 
 ## Supplied artifacts
 
-- `results/`: unmodified extraction of `sarcastone_outputs.zip`, including the original report, result tables and figures.
-- `Unknown-3 (1).pdf`: byte-identical copy of `results/SarcasTone_Report.pdf`.
-- Original ZIP/PDF remain for provenance. Saved notebook outputs have been cleared to avoid confusing earlier execution with current verification.
+- Original supplied artifacts are preserved in `results/`: report, result tables, figures, and predictions.
+- Duplicate root-level ZIP/PDF files have been removed. Saved source-notebook outputs are cleared to distinguish the source from executed runs.
 - `ANALYSIS.md`: code review, findings and execution limitations.
 
 Saved results are historical, not the output of the corrected notebook. No dataset, feature caches, or trained classifier weights were supplied. This is an experiment pipeline, not an inference service or web app.
@@ -46,7 +45,6 @@ On 20 November 2026, the complete notebook ran successfully on local CPU in 10.8
 ## Paper and presentation
 
 - [IEEE paper PDF](paper/TrueTone_IEEE_Paper.pdf)
-- [Editable LaTeX source](paper/main.tex), bibliography and generated result tables in `paper/`
 - [Corrected presentation](presentations/TrueTone_Final_Presentation.pptx)
 
-The paper uses the completed local MUStARD run. To regenerate its tables and vector figure, run `.venv/bin/python paper/generate_results.py`. Compile `paper/main.tex` using IEEEtran and BibTeX. Source text uses ordinary ASCII spaces.
+The `paper/` folder contains only the final PDF, based on the completed local MUStARD run. The editable manuscript is maintained separately in Overleaf.
