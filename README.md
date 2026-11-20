@@ -38,3 +38,7 @@ This executes actual notebook prosody extraction on generated tone/silence audio
 Saved results are historical, not the output of the corrected notebook. No dataset, feature caches, or trained classifier weights were supplied. This is an experiment pipeline, not an inference service or web app.
 
 Dataset and pretrained models retain their upstream terms; this repository does not bundle videos or model weights.
+
+## Completed full run
+
+On 20 November 2026, the complete notebook ran successfully on local CPU in 10.8 minutes: 690 MUStARD examples, 14 models, repeated CV and held-out-show evaluation, all 15 code cells without errors. Fresh results, report and executed notebook are in [`results/local-run-2026-11-20/`](results/local-run-2026-11-20/). Original supplied results remain in `results/`. Best mean CV F1 was 0.7655; best pooled cross-show F1 was 0.6584. See `ANALYSIS.md` for interpretation and limitations.

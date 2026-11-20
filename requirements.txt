@@ -1,3 +1,4 @@
+pip
 torch
 transformers>=4.40
 librosa>=0.10

@@ -28,3 +28,13 @@ Mean random-split F1 peaks at 0.762 for gated fusion without mismatch, versus 0.
 Local tests execute notebook functions on synthetic audio/features and validate saved artifact structure and fold-summary consistency. Full encoder downloads, all 690 clips, complete repeated-CV training and report regeneration are not covered by these tests. Historical metrics must not be presented as newly reproduced results after these corrections.
 
 Local verification: Python 3.12.14 on macOS arm64; five unittest cases passed (16.346 seconds). Notebook schema/code compilation, runner help and script compilation also passed. The original five-page PDF was text-extracted and its first page visually inspected; no PDF content was changed.
+
+## Complete local run: 20 November 2026
+
+Completed the full corrected notebook on macOS arm64 CPU, using four classifier workers, in 10.8 minutes. Downloaded all 690 MUStARD clips; extracted audio, all encoder blocks and 58 prosody features. All 15 code cells executed without errors. Both protocols completed: 210 repeated-CV fold/model rows and 28 held-out-show rows, covering 14 model variants. Generated fold means match their saved summaries. The generated five-page PDF was rendered and visually inspected.
+
+Fresh outputs and the executed notebook are in `results/local-run-2026-11-20/`; original artifacts remain in the parent `results/` directory. The source notebook still has clean outputs. Dataset/model downloads and feature caches remain local under ignored `sarcastone/`.
+
+Best mean CV F1: gated multimodal with mismatch, 0.7655 (fold standard deviation 0.0476). Best pooled held-out-show F1: LR speech-only, 0.6584. This run does not establish that explicit mismatch improves cross-show generalisation. Statistical and protocol caveats above still apply.
+
+The first execution exposed missing pip in the uv environment; pip is now an explicit setup dependency. The runner now logs cell starts/completions and saves progress after each completed cell. Its callbacks were separately checked by executing and saving a small notebook. No cloud machine was provisioned; the report's Vast cost is a configured estimate, not actual local spend.
