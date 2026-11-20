@@ -1,0 +1,7 @@
+{
+ "mean_abs_diff_sarcastic": 0.5416674017906189,
+ "mean_abs_diff_nonsarcastic": 0.6227753758430481,
+ "mannwhitney_p": 0.04065881669521332,
+ "flip_rate_sarcastic": 0.2811594202898551,
+ "flip_rate_nonsarcastic": 0.30434782608695654
+}
