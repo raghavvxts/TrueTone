@@ -19,6 +19,8 @@ uv pip install --python .venv/bin/python -r requirements-ui.txt
 
 Open **http://127.0.0.1:7860** in Chrome, Edge or Safari. Allow microphone access, record 1–30 seconds of English speech, stop, then click **Analyze recording**. You can also upload audio. Leave the optional transcript blank for local Whisper transcription, or type the exact spoken words to correct it. Selecting a new recording clears the previous transcript and result.
 
+The optional transcript and model selector are under **Adjust transcript or model**.
+
 The demo reports **Sarcastic / Not sarcastic**, both model scores and the transcript used. It runs after recording stops, rather than continuously streaming predictions. If an embedded browser cannot detect your microphone, open the URL in your normal browser. Silence and recordings outside the duration limit are rejected.
 
 The included `models/truetone_lr.joblib` contains final multimodal and speech-reference logistic-regression classifiers fitted on MUStARD. These are final refits, distinct from the fold-trained research evaluation models. The UI does not use the gated network. Speech-reference features also need transcript word counts. Model scores are uncalibrated estimates; live speech and automatic transcription were not part of the reported CV benchmark.
@@ -79,3 +81,5 @@ On 20 November 2026, the complete notebook ran successfully on local CPU in 10.8
 - [Final presentation](presentations/TrueTone-PID-02.pptx)
 
 The `paper/` folder contains only the final PDF, based on the completed local MUStARD run. The editable manuscript is maintained separately in Overleaf.
+
+UI colors, spacing and typography are defined in `ui/style.css`; design conventions are documented in `ui/STYLE_GUIDE.md`. Both light and dark modes use the same shared design tokens.
