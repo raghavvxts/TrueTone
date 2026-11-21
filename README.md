@@ -35,6 +35,20 @@ To retrain the final classifiers from the actual notebook data/feature pipeline:
 
 This downloads MUStARD if needed, reuses valid feature caches, and fits the final LR models without rerunning the evaluation protocols. Only load trusted local joblib bundles. `TRUETONE_MODEL` overrides the model path; `TRUETONE_PORT` overrides the default 7860 port. Pretrained caches use `HF_HOME` or the local `truetone/hf` directory.
 
+## macOS Desktop app
+
+Double-click **TrueTone.app** on your Desktop. The app starts the local Python server in the background, shows elapsed startup time, and opens the website when it is ready. No Terminal commands are needed for normal use. The app runs its own server on port 7861 only while open. Closing its window or choosing Quit stops that server, including an analysis in progress. A parent-process watchdog also shuts it down if the app is force-quit. Nothing starts at login or stays running after exit.
+
+Choose **TrueTone > Enable Microphone** if the input device is missing, and grant microphone access. **TrueTone > Open in Browser** is available as a fallback. The first analysis may still take time while encoders load; its progress appears in the website.
+
+The app uses this project folder and its `.venv`; keep both in place. If you move the folder, rebuild the launcher:
+
+```sh
+.venv/bin/python scripts/build_desktop_app.py
+```
+
+Building requires macOS with Xcode Command Line Tools. Server startup errors are logged in `~/Library/Logs/TrueTone/server.log`. The app stays local; it needs no Vercel deployment or public tunnel.
+
 ## Run the research experiment
 
 Python 3.12 recommended. The notebook installs its own dependencies; use an isolated environment.
