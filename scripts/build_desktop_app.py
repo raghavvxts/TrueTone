@@ -28,6 +28,10 @@ def build(destination):
     subprocess.run(['xcrun', 'swiftc', str(ROOT / 'desktop/TrueTone.swift'),
                     '-o', str(contents / 'MacOS/TrueTone'), '-framework', 'Cocoa', '-framework', 'WebKit', '-framework', 'AVFoundation'], check=True)
     subprocess.run(['codesign', '--force', '--sign', '-', str(destination)], check=True)
+    # Refresh Finder after replacing an existing app's icon resources.
+    subprocess.run(['/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister',
+                    '-f', str(destination)], check=True)
+    destination.touch()
     print(destination)
 
 

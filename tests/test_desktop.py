@@ -24,9 +24,11 @@ class DesktopTests(unittest.TestCase):
             self.assertTrue((contents / 'Resources/logo.png').is_file())
             self.assertIn('locally', info['NSMicrophoneUsageDescription'])
             self.assertEqual((contents / 'Resources/project-path.txt').read_text(), str(builder.ROOT))
-            self.assertEqual(run.call_count, 2)
+            self.assertEqual(run.call_count, 3)
             self.assertEqual(run.call_args_list[0].args[0][:2], ['xcrun', 'swiftc'])
             self.assertEqual(run.call_args_list[1].args[0][0], 'codesign')
+            self.assertTrue(run.call_args_list[2].args[0][0].endswith('/lsregister'))
+            self.assertEqual(run.call_args_list[2].args[0][1:], ['-f', str(destination)])
 
     def test_watchdog_exits_when_parent_disappears(self):
         source = Path(__file__).resolve().parents[1] / 'scripts/run_desktop_server.py'
