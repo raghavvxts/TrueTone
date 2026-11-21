@@ -1,5 +1,6 @@
 """TrueTone local microphone demo. Run with: python app.py"""
 from functools import lru_cache
+import base64
 import os
 from pathlib import Path
 
@@ -24,6 +25,8 @@ def analyze(audio, transcript, model, progress=gr.Progress()):
     return {'Sarcastic': score, 'Not sarcastic': 1-score}, words, details, voice, emotion_scores
 
 
+ASSETS = Path(__file__).resolve().parent / 'assets'
+LOGO_DATA = base64.b64encode((ASSETS / 'logo-96.png').read_bytes()).decode('ascii')
 CSS = (Path(__file__).resolve().parent / 'ui/style.css').read_text()
 EMPTY_RESULT = '### No result yet\nRecord or upload a clip, then choose **Analyze recording**.'
 THEME = gr.themes.Base(primary_hue='emerald', neutral_hue='stone', font=['Arial', 'sans-serif']).set(
@@ -36,7 +39,7 @@ THEME = gr.themes.Base(primary_hue='emerald', neutral_hue='stone', font=['Arial'
 def create_app():
     with gr.Blocks(title='TrueTone — Speech & Sarcasm', analytics_enabled=False, delete_cache=(3600, 3600)) as demo:
         gr.HTML("""<header class="tt-masthead">
-          <div class="tt-wordmark">TrueTone</div>
+          <div class="tt-wordmark"><img class="tt-logo" src="data:image/png;base64,LOGO_DATA" alt="" aria-hidden="true">TrueTone</div>
           <nav class="tt-masthead-right" aria-label="Project"><span class="tt-project">PID-02</span>
           <a href="https://github.com/raghavvxts/TrueTone" target="_blank" rel="noopener noreferrer">View source</a></nav>
         </header>
@@ -44,7 +47,7 @@ def create_app():
           <div><p class="tt-eyebrow">SPEECH &amp; SARCASM</p><h1 id="hero-title">A closer listen<br>to sarcasm.</h1></div>
           <div class="tt-intro"><p>Record a line and see how the model reads its words and delivery.</p>
           <p class="tt-format">1–30 seconds / English speech</p></div>
-        </section>""")
+        </section>""".replace('LOGO_DATA', LOGO_DATA))
         with gr.Row(elem_id='workspace'):
             with gr.Column(min_width=280, elem_id='input-pane'):
                 gr.HTML('<div class="tt-section-heading"><h2>Your recording</h2><span>Record or upload</span></div>')
@@ -79,4 +82,5 @@ def create_app():
 
 if __name__ == '__main__':
     create_app().queue(max_size=4).launch(server_name='127.0.0.1', server_port=int(os.environ.get('TRUETONE_PORT', '7860')),
-        share=False, max_file_size='15mb', theme=THEME, css=CSS)
+        share=False, max_file_size='15mb', theme=THEME, css=CSS, favicon_path=ASSETS / 'favicon.ico',
+        allowed_paths=[str(ASSETS)], head=f'<link rel="apple-touch-icon" href="/gradio_api/file={ASSETS / "apple-touch-icon.png"}"><meta name="theme-color" content="#203c34">')

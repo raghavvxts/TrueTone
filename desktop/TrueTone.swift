@@ -52,9 +52,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKUIDelegate, WKNaviga
         status.font = .systemFont(ofSize: 16)
         status.textColor = .darkGray
         status.translatesAutoresizingMaskIntoConstraints = false
+        let logo = NSImageView()
+        logo.image = NSImage(contentsOf: Bundle.main.url(forResource: "logo", withExtension: "png")!)
+        logo.imageScaling = .scaleProportionallyUpOrDown
+        logo.translatesAutoresizingMaskIntoConstraints = false
+        loading.addSubview(logo)
         loading.addSubview(title)
         loading.addSubview(status)
         NSLayoutConstraint.activate([
+            logo.widthAnchor.constraint(equalToConstant: 88),
+            logo.heightAnchor.constraint(equalToConstant: 88),
+            logo.centerXAnchor.constraint(equalTo: loading.centerXAnchor),
+            logo.bottomAnchor.constraint(equalTo: title.topAnchor, constant: -24),
             title.centerXAnchor.constraint(equalTo: loading.centerXAnchor),
             title.centerYAnchor.constraint(equalTo: loading.centerYAnchor, constant: -45),
             status.centerXAnchor.constraint(equalTo: loading.centerXAnchor),

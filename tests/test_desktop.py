@@ -19,6 +19,9 @@ class DesktopTests(unittest.TestCase):
             contents = destination / 'Contents'
             info = plistlib.loads((contents / 'Info.plist').read_bytes())
             self.assertEqual(info['CFBundleExecutable'], 'TrueTone')
+            self.assertEqual(info['CFBundleIconFile'], 'TrueTone.icns')
+            self.assertTrue((contents / 'Resources/TrueTone.icns').is_file())
+            self.assertTrue((contents / 'Resources/logo.png').is_file())
             self.assertIn('locally', info['NSMicrophoneUsageDescription'])
             self.assertEqual((contents / 'Resources/project-path.txt').read_text(), str(builder.ROOT))
             self.assertEqual(run.call_count, 2)

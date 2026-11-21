@@ -108,3 +108,6 @@ footer { display: none !important; }
 #voice-profile h3 { font-family: var(--tt-display); font-size: 25px; font-weight: 400; color: var(--tt-ink); }
 #voice-profile p { font-size: 14px; line-height: 1.6; color: var(--tt-muted); }
 #emotion-scores { background: transparent !important; border: none !important; }
+
+.tt-wordmark { display: flex; align-items: center; gap: 12px; }
+.tt-logo { display: block; width: 40px; height: 40px; flex-shrink: 0; }

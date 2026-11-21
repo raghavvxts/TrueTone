@@ -1,6 +1,7 @@
 """Build the local macOS wrapper. No Python/model files are copied into the app."""
 from pathlib import Path
 import plistlib
+import shutil
 import subprocess
 import sys
 
@@ -12,11 +13,13 @@ def build(destination):
     (contents / 'MacOS').mkdir(parents=True, exist_ok=True)
     (contents / 'Resources').mkdir(exist_ok=True)
     (contents / 'Resources/project-path.txt').write_text(str(ROOT))
+    shutil.copy2(ROOT / 'assets/TrueTone.icns', contents / 'Resources/TrueTone.icns')
+    shutil.copy2(ROOT / 'assets/logo-192.png', contents / 'Resources/logo.png')
     info = {
         'CFBundleExecutable': 'TrueTone', 'CFBundleIdentifier': 'com.truetone.desktop',
         'CFBundleName': 'TrueTone', 'CFBundleDisplayName': 'TrueTone',
         'CFBundlePackageType': 'APPL', 'CFBundleShortVersionString': '1.0',
-        'CFBundleVersion': '1', 'LSMinimumSystemVersion': '12.0',
+        'CFBundleIconFile': 'TrueTone.icns', 'CFBundleVersion': '2', 'LSMinimumSystemVersion': '12.0',
         'NSHighResolutionCapable': True,
         'NSMicrophoneUsageDescription': 'TrueTone uses your microphone to analyze recordings locally on your Mac.',
     }

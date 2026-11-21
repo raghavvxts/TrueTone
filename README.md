@@ -1,5 +1,7 @@
 # TrueTone
 
+<img src="assets/logo-192.png" width="88" height="88" alt="TrueTone speech and waveform logo">
+
 Research pipeline for multimodal sarcasm detection using utterance text and speech prosody on MUStARD.
 
 ## Project files
