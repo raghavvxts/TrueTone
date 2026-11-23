@@ -104,7 +104,8 @@ def prepare_audio(audio):
     if samples.ndim == 2:
         samples = samples.mean(axis=1)
     if np.sqrt(np.mean((samples - samples.mean())**2)) < 1e-4:
-        raise ValueError('The recording is silent or too quiet. Check your microphone.')
+        raise ValueError('The recording is silent or too quiet. Check your input device and volume. '
+                         'If your MacBook lid is closed, open it or use an external microphone.')
     return librosa.resample(samples, orig_sr=sr, target_sr=16000).astype(np.float32)
 
 

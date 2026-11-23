@@ -27,6 +27,12 @@ class DesktopTests(unittest.TestCase):
             self.assertEqual(run.call_count, 3)
             self.assertEqual(run.call_args_list[0].args[0][:2], ['xcrun', 'swiftc'])
             self.assertEqual(run.call_args_list[1].args[0][0], 'codesign')
+            signing = run.call_args_list[1].args[0]
+            entitlements = Path(signing[signing.index('--entitlements') + 1])
+            access = plistlib.loads(entitlements.read_bytes())
+            self.assertTrue(access['com.apple.security.device.audio-input'])
+            self.assertTrue(access['com.apple.security.device.microphone'])
+            self.assertNotIn('com.apple.security.device.camera', access)
             self.assertTrue(run.call_args_list[2].args[0][0].endswith('/lsregister'))
             self.assertEqual(run.call_args_list[2].args[0][1:], ['-f', str(destination)])
 

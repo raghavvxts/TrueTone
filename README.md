@@ -35,6 +35,8 @@ On this Mac, open **TrueTone.app** in Applications. It starts its own local serv
 
 Leave the optional transcript blank for local Whisper transcription, or enter the exact spoken words under **Adjust transcript or model**. New audio clears the previous transcript and results. Choose **TrueTone > Enable Microphone** if needed, or **Open in Browser** for a browser fallback. Microphone access requires permission and localhost or HTTPS.
 
+On a MacBook, keep the lid open when using the built-in microphone, or select an external microphone. Apple silicon and T2 Mac laptops [disconnect the built-in microphone in hardware when the lid is closed](https://support.apple.com/guide/security/hardware-microphone-disconnect-secbbd20b00b/web). A closed-lid recording may contain only silence even when microphone permission is enabled.
+
 Fresh launches use light mode. The sun/moon switch enables OLED dark mode without clearing the recording. Previous output is hidden while analysis runs.
 
 To launch from source on another machine:

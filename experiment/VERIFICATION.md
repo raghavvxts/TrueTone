@@ -16,3 +16,10 @@ Verified locally on 23 November 2026.
 - Dataset downloads, caches, personal recordings and document staging files are ignored and excluded from the commit.
 
 The observed Text + speech F1 improvement is 0.7608 versus 0.7435. Its 95% paired interval includes zero; no conclusive superiority or live-microphone accuracy claim is made.
+
+## Microphone follow-up: 24 November 2026
+
+- macOS showed TrueTone microphone permission enabled. The launcher was rebuilt with explicit microphone/audio-input entitlements; tests verify that signing includes these and excludes camera access.
+- Chrome successfully requested microphone access and captured a 15.18-second, 44.1 kHz mono WAV through the local interface. Every sample was zero; silence validation correctly rejected it.
+- The hardware registry reported `AppleClamshellState = Yes`: the MacBook lid was closed. Apple disconnects the built-in microphone in that state. The README and silence error now explain opening the lid or choosing an external microphone.
+- A non-silent physical microphone inference still requires opening the lid or selecting a working external input. It has not yet been verified. No captured audio is included in Git.

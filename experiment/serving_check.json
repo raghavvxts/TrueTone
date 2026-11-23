@@ -45,5 +45,14 @@
   "loading_hides_previous_result": true,
   "shutdown_port_closed": true,
   "note": "Serving smoke checks use dataset clips, including training targets; these are functional checks, not accuracy estimates. No personal audio included.",
-  "physical_recording": "Pending macOS/WebKit microphone authorization; not verified."
+  "physical_recording": "Chrome captured 15.18s of zero-valued samples with the MacBook lid closed; silence was rejected. Non-silent microphone inference remains pending.",
+  "microphone_capture_check": {
+    "browser": "Chrome",
+    "sample_rate": 44100,
+    "duration_seconds": 15.179977324263039,
+    "peak": 0,
+    "rms": 0,
+    "lid_closed": true,
+    "silence_rejected": true
+  }
 }
