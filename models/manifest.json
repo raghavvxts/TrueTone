@@ -1,26 +1,14 @@
 {
-  "dataset": "MUStARD",
-  "training_examples": 690,
+  "dataset": "MUStARD++",
+  "n_samples": 1202,
+  "training_examples": 1202,
   "classifier": "LogisticRegressionCV",
-  "models": {
-    "Text + speech": [
-      "text_emb",
-      "text_sent",
-      "wavlm",
-      "prosody",
-      "speech_emo",
-      "mismatch"
-    ],
-    "Speech reference": [
-      "wavlm",
-      "prosody",
-      "speech_emo"
-    ]
-  },
-  "feature_signature": "1c3258245a11a69549da4634f769fcf3d5e1ae21ee9badcf3c4503e84b3163e3",
-  "sha256": "9671ce578239a036bc78630e19ff07f3440b42495173259db63d93757c7c7630",
-  "sklearn_version": "1.9.1",
   "threshold": 0.5,
+  "sklearn_version": "1.9.1",
+  "feature_signature": "1c3258245a11a69549da4634f769fcf3d5e1ae21ee9badcf3c4503e84b3163e3",
+  "training_only": true,
+  "sha256": "b6f75922fbbd3f5324522d93a16c3f30c1ebeec66498f99fd7fcd661e58683a5",
+  "official_annotation_sha256": "b134fa60bc4d0d7ba4c08953402dd298731670b9337f8bb2bad693e1890f6e4e",
   "transcription": "openai/whisper-tiny.en",
-  "note": "Final refits on all examples; live microphone/ASR accuracy has not been benchmarked."
+  "note": "Final refit on all targets; separate fold-trained models produce the reported evaluation."
 }

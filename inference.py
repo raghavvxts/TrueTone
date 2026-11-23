@@ -143,7 +143,7 @@ def cue_contrast(text_valence, speech_valence):
     return ''
 
 
-def fit_bundle(features, labels, config, prosody_names, emotion_labels, ids, path=MODEL_PATH):
+def fit_bundle(features, labels, config, prosody_names, emotion_labels, ids, path=MODEL_PATH, dataset='MUStARD++'):
     labels = np.asarray(labels)
     if len(ids) != len(labels) or len(set(ids)) != len(ids) or set(np.unique(labels)) != {0, 1}:
         raise ValueError('Training rows must have unique IDs and both binary classes.')
@@ -166,7 +166,7 @@ def fit_bundle(features, labels, config, prosody_names, emotion_labels, ids, pat
         models[name] = dict(blocks=blocks, scalers=scalers, classifier=classifier)
     bundle = dict(version=1, feature_signature=feature_signature(), config=config,
                   prosody_names=list(prosody_names), emotion_labels=list(emotion_labels),
-                  ids=list(ids), n_samples=len(labels), dataset='MUStARD', models=models)
+                  ids=list(ids), n_samples=len(labels), dataset=dataset, models=models)
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     temp = path.with_suffix('.tmp')

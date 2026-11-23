@@ -7,3 +7,6 @@ truetone/
 .env
 .env.*
 !.env.example
+
+# Dataset downloads and personal test recordings stay local.
+data/

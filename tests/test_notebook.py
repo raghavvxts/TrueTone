@@ -11,7 +11,7 @@ import soundfile as sf
 import torch
 
 ROOT = Path(__file__).resolve().parents[1]
-NOTEBOOK = json.loads((ROOT / 'TrueTone.ipynb').read_text())
+NOTEBOOK = json.loads((ROOT / 'research/baseline/TrueTone_MUStARD.ipynb').read_text())
 
 
 def source(i):
@@ -27,6 +27,11 @@ def definitions(i):
 class NotebookTests(unittest.TestCase):
     def test_all_cells_compile(self):
         import nbformat
+        primary = nbformat.read(ROOT / 'TrueTone.ipynb', as_version=4)
+        nbformat.validate(primary)
+        for cell in primary.cells:
+            if cell.cell_type == 'code':
+                compile(cell.source, 'MUStARD++ notebook', 'exec')
         nbformat.validate(nbformat.from_dict(NOTEBOOK))
         for i, cell in enumerate(NOTEBOOK['cells']):
             if cell['cell_type'] == 'code':
@@ -77,9 +82,9 @@ class NotebookTests(unittest.TestCase):
     def test_saved_results(self):
         from sklearn.metrics import f1_score
         for protocol, repeats in [('cv', 3), ('loso', 1)]:
-            folds = pd.read_csv(ROOT / f'results/folds_{protocol}.csv')
-            summary = pd.read_csv(ROOT / f'results/results_{protocol}.csv', index_col=0)
-            with np.load(ROOT / f'results/oof_{protocol}.npz', allow_pickle=False) as predictions:
+            folds = pd.read_csv(ROOT / f'results/mustard-baseline/folds_{protocol}.csv')
+            summary = pd.read_csv(ROOT / f'results/mustard-baseline/results_{protocol}.csv', index_col=0)
+            with np.load(ROOT / f'results/mustard-baseline/oof_{protocol}.npz', allow_pickle=False) as predictions:
                 self.assertEqual(set(predictions.files), set(summary.index))
                 for model in predictions.files:
                     values = predictions[model]

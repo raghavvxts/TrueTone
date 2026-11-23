@@ -1,0 +1,49 @@
+{
+  "dataset": "MUStARD++",
+  "training_examples": 1202,
+  "model_sha256": "b6f75922fbbd3f5324522d93a16c3f30c1ebeec66498f99fd7fcd661e58683a5",
+  "api_checks": [
+    {
+      "clip": "1_60",
+      "model": "Text + speech",
+      "seconds": 0.437392624997301,
+      "score": 0.9023982488572075,
+      "transcript": "It's just a privilege to watch your mind at work."
+    },
+    {
+      "clip": "1_S09E01_027",
+      "model": "Text + speech",
+      "seconds": 0.7696183329971973,
+      "score": 0.46202906490532575,
+      "transcript": "Whatever, put us on the internet. I've always wanted a wedding with a comment section."
+    },
+    {
+      "clip": "1_60",
+      "model": "Speech reference",
+      "seconds": 0.4902638330240734,
+      "score": 0.8612930915338161,
+      "transcript": "It's just a privilege to watch your mind at work."
+    }
+  ],
+  "feature_parity": [
+    {
+      "clip": "1_60",
+      "model": "Text + speech",
+      "live_score": 0.9023982488572075,
+      "cached_feature_score": 0.9023982073853962,
+      "parity_passed": true
+    },
+    {
+      "clip": "1_60",
+      "model": "Speech reference",
+      "live_score": 0.8612930915338161,
+      "cached_feature_score": 0.8612930915338161,
+      "parity_passed": true
+    }
+  ],
+  "ui_upload_passed": true,
+  "loading_hides_previous_result": true,
+  "shutdown_port_closed": true,
+  "note": "Serving smoke checks use dataset clips, including training targets; these are functional checks, not accuracy estimates. No personal audio included.",
+  "physical_recording": "Pending macOS/WebKit microphone authorization; not verified."
+}

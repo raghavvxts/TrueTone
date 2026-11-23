@@ -24,6 +24,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKUIDelegate, WKNaviga
         menu.addItem(item)
         let appMenu = NSMenu()
         appMenu.addItem(withTitle: "Enable Microphone", action: #selector(enableMicrophone), keyEquivalent: "m")
+        appMenu.addItem(withTitle: "Grant Project Folder Access", action: #selector(grantProjectAccess), keyEquivalent: "")
         appMenu.addItem(withTitle: "Open in Browser", action: #selector(openBrowser), keyEquivalent: "o")
         appMenu.addItem(withTitle: "Reload Workspace", action: #selector(reloadWorkspace), keyEquivalent: "r")
         appMenu.addItem(withTitle: "Close Window", action: #selector(closeWindow), keyEquivalent: "w")
@@ -149,14 +150,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKUIDelegate, WKNaviga
         loading.isHidden = false
         status.stringValue = message
     }
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) { loading.isHidden = true }
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) { waitForWorkspace() }
+    func waitForWorkspace(_ attempt: Int = 0) {
+        web.evaluateJavaScript("document.getElementById('workspace') !== null") { [weak self] value, _ in
+            guard let self = self else { return }
+            if value as? Bool == true {
+                self.loading.isHidden = true
+                self.window.makeKeyAndOrderFront(nil)
+                NSApp.activate(ignoringOtherApps: true)
+            }
+            else if attempt < 20 {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { self.waitForWorkspace(attempt + 1) }
+            } else if !self.recoveredWebProcess {
+                self.recoveredWebProcess = true
+                self.reloadWorkspace()
+            } else { self.fail("The page did not render. Try Reload Workspace or Open in Browser.") }
+        }
+    }
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         fail("Website could not load: \(error.localizedDescription). Try Open in Browser from the TrueTone menu.")
-    }
-    func webView(_ webView: WKWebView, requestMediaCapturePermissionFor origin: WKSecurityOrigin,
-                 initiatedByFrame frame: WKFrameInfo, type: WKMediaCaptureType,
-                 decisionHandler: @escaping (WKPermissionDecision) -> Void) {
-        decisionHandler(origin.host == "127.0.0.1" && origin.port == 7861 && type == .microphone ? .prompt : .deny)
     }
     func webView(_ webView: WKWebView, runOpenPanelWith parameters: WKOpenPanelParameters,
                  initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping ([URL]?) -> Void) {
@@ -175,17 +187,51 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKUIDelegate, WKNaviga
         return nil
     }
     @objc func enableMicrophone() {
-        AVCaptureDevice.requestAccess(for: .audio) { granted in
-            DispatchQueue.main.async {
-                if granted { self.web.reload() }
-                else {
-                    let alert = NSAlert()
-                    alert.messageText = "Microphone access is off"
-                    alert.informativeText = "Allow TrueTone in System Settings > Privacy & Security > Microphone, then reopen the app. You can also upload audio."
-                    alert.beginSheetModal(for: self.window)
-                }
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+        // Let WebKit present its normal microphone prompt for this user action.
+        // Stop the permission-check stream immediately; Record starts actual capture.
+        web.callAsyncJavaScript("""
+            const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+            stream.getTracks().forEach(track => track.stop());
+            return true;
+            """, arguments: [:], in: nil, in: .page) { result in
+            switch result {
+            case .success: self.web.reload()
+            case .failure(let error):
+                let alert = NSAlert()
+                alert.messageText = "Microphone could not start"
+                alert.informativeText = error.localizedDescription + " Allow TrueTone in System Settings > Privacy & Security > Microphone, or use Open in Browser or upload audio."
+                alert.beginSheetModal(for: self.window)
             }
         }
+    }
+    @objc func grantProjectAccess() {
+        guard let pathFile = Bundle.main.url(forResource: "project-path", withExtension: "txt"),
+              let root = try? String(contentsOf: pathFile, encoding: .utf8).trimmingCharacters(in: .whitespacesAndNewlines) else { return }
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = false
+        panel.directoryURL = URL(fileURLWithPath: root)
+        panel.message = "Select the TrueTone project folder to restore access after an app rebuild, then reopen TrueTone."
+        panel.prompt = "Allow Project Access"
+        panel.beginSheetModal(for: window) { response in
+            if response == .OK, panel.url?.standardizedFileURL == URL(fileURLWithPath: root).standardizedFileURL {
+                NSApp.terminate(nil)
+            }
+        }
+    }
+    func webView(_ webView: WKWebView, requestMediaCapturePermissionFor origin: WKSecurityOrigin,
+                 initiatedByFrame frame: WKFrameInfo, type: WKMediaCaptureType,
+                 decisionHandler: @escaping (WKPermissionDecision) -> Void) {
+        // Only the owned localhost app may request audio. Never grant camera access.
+        guard origin.protocol == "http", origin.host == "127.0.0.1", origin.port == 7861,
+              frame.isMainFrame, type == .microphone else {
+            decisionHandler(.deny)
+            return
+        }
+        decisionHandler(.prompt)
     }
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         if recoveredWebProcess {

@@ -1,0 +1,19 @@
+{
+  "official_csv_sha256": "b134fa60bc4d0d7ba4c08953402dd298731670b9337f8bb2bad693e1890f6e4e",
+  "targets": 1202,
+  "classes": {
+    "0": 601,
+    "1": 601
+  },
+  "shared_ids": 688,
+  "added_ids": 514,
+  "removed_original_ids": [
+    "2_167",
+    "2_99"
+  ],
+  "changed_shared_transcripts": 6,
+  "duplicate_normalized_targets": 21,
+  "feature_signature": "1c3258245a11a69549da4634f769fcf3d5e1ae21ee9badcf3c4503e84b3163e3",
+  "baseline_feature_source": "truetone/pp/baseline_features.npz",
+  "split_note": "Group identical normalized transcripts across both corpora; exclude every held-out group from both training conditions."
+}

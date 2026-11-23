@@ -2,16 +2,42 @@
 
 <img src="assets/logo-192.png" width="88" height="88" alt="TrueTone speech and waveform logo">
 
-Research pipeline for multimodal sarcasm detection using utterance text and speech prosody on MUStARD.
+**PID-02 · Multimodal sarcasm detection on MUStARD++ using text and speech prosody.**
 
-## Project files
+The final app uses logistic-regression classifiers fitted on **1,202 MUStARD++ target utterances**, balanced at 601 sarcastic and 601 non-sarcastic. Text, sentiment, speech and emotion encoders remain frozen. The original 690-utterance MUStARD experiment is retained as the baseline, with its original weights and results clearly separated.
 
-- [Research notebook](TrueTone.ipynb)
-- [IEEE paper](paper/TrueTone_IEEE_Paper.pdf)
-- [Presentation](presentations/TrueTone-PID-02.pptx)
-- [Completed experiment](results/local-run-2026-11-20/)
+| Team member | Enrolment |
+|---|---|
+| Manas Sharma | S24CSEU2420 |
+| Raghav Vats | S24CSEU1665 |
+| Vaibhav Singh | S24CSEU1668 |
+| Sumit Bhati | S24CSEU2870 |
 
-## Microphone demo
+Bennett University, Greater Noida, India · Instructor: Dr. Saurabh Kumar Srivastava
+
+## Evaluation files
+
+- [Final presentation](presentations/TrueTone-PID-02.pptx)
+- [IEEE-format paper PDF](paper/TrueTone_IEEE_Paper.pdf) — the only file in `paper/`
+- [MUStARD++ research notebook](TrueTone.ipynb)
+- [Full paired comparison and limitations](results/mustardpp/report.md)
+- [Verification record](experiment/VERIFICATION.md)
+- [Dataset audit](experiment/data_audit.json) and [active model manifest](models/manifest.json)
+- [MUStARD baseline notebook](research/baseline/TrueTone_MUStARD.ipynb), [weights](models/baseline/), and [historical results](results/mustard-baseline/)
+
+## Use the local app
+
+On this Mac, open **TrueTone.app** in Applications. It starts its own local server on port 7861 and shows elapsed startup time. Closing the window or quitting stops the server; a watchdog also handles force-quit. Nothing runs at login or remains running after exit.
+
+1. Record or upload **1–30 seconds of English speech**.
+2. Stop recording, then choose **Analyze recording**.
+3. Read the sarcasm estimate, transcript and voice-delivery estimate. Expand **Voice emotion scores** for details.
+
+Leave the optional transcript blank for local Whisper transcription, or enter the exact spoken words under **Adjust transcript or model**. New audio clears the previous transcript and results. Choose **TrueTone > Enable Microphone** if needed, or **Open in Browser** for a browser fallback. Microphone access requires permission and localhost or HTTPS.
+
+Fresh launches use light mode. The sun/moon switch enables OLED dark mode without clearing the recording. Previous output is hidden while analysis runs.
+
+To launch from source on another machine:
 
 ```sh
 uv venv --python 3.12 .venv
@@ -19,104 +45,93 @@ uv pip install --python .venv/bin/python -r requirements-ui.txt
 .venv/bin/python app.py
 ```
 
-Open **http://127.0.0.1:7860** in Chrome, Edge or Safari. Allow microphone access, record 1–30 seconds of English speech, stop, then click **Analyze recording**. You can also upload audio. Leave the optional transcript blank for local Whisper transcription, or type the exact spoken words to correct it. Selecting a new recording clears the previous transcript and result.
+Open **http://127.0.0.1:7860**. Initial use downloads several GB of frozen encoder weights and `openai/whisper-tiny.en`. Afterwards audio processing is local; recordings are not sent to a speech API. Models stay in RAM while the process is open, speeding up later clips, and are released on exit. Timing depends on hardware and clip length. The app binds to localhost and does not create a public sharing link.
 
-The optional transcript and model selector are under **Adjust transcript or model**.
+The macOS wrapper uses this folder and its `.venv`; keep both in place. Rebuild after moving the folder:
 
-The demo reports **Sarcastic / Not sarcastic**, both model scores and the transcript used. It runs after recording stops, rather than continuously streaming predictions. If an embedded browser cannot detect your microphone, open the URL in your normal browser. Silence and recordings outside the duration limit are rejected.
+```sh
+.venv/bin/python scripts/build_desktop_app.py /Applications/TrueTone.app
+```
 
-The included `models/truetone_lr.joblib` contains final multimodal and speech-reference logistic-regression classifiers fitted on MUStARD. These are final refits, distinct from the fold-trained research evaluation models. The UI does not use the gated network. Speech-reference features also need transcript word counts. Model scores are uncalibrated estimates; live speech and automatic transcription were not part of the reported CV benchmark.
+Building requires Xcode Command Line Tools. Startup errors appear in `~/Library/Logs/TrueTone/server.log`. **Reload Workspace** (Cmd+R) reloads the page. The loading screen waits for the interface to render and retries once if needed.
 
-The first inference downloads the frozen Hugging Face encoders and `openai/whisper-tiny.en` (several GB in total). After downloads, inference is local and audio is not sent to a speech API. Gradio temporary uploads are cleaned periodically. Browser microphone access requires localhost or HTTPS. This app binds to localhost and does not create a public sharing link.
+After rebuilding the local app, macOS may require renewed project access. Use **TrueTone > Grant Project Folder Access**, select this TrueTone folder, then reopen the app. **Enable Microphone** requests both macOS and WebKit audio permission and immediately releases the permission-check stream; recording starts only with the Record button.
 
-To retrain the final classifiers from the actual notebook data/feature pipeline:
+## What is actually trained
+
+`models/truetone_lr.joblib` is the active **MUStARD++** bundle. It contains **Text + speech** and **Speech reference** classifiers. `models/baseline/truetone_lr.joblib` preserves the original MUStARD bundle; neither artifact is an out-of-fold evaluation model.
+
+| Feature block | Dimensions |
+|---|---:|
+| RoBERTa-large target-text embedding | 1,024 |
+| CardiffNLP text sentiment | 3 |
+| WavLM-large speech embedding | 2,048 |
+| Acoustic/prosodic statistics | 58 |
+| SUPERB speech emotion probabilities | 4 |
+| Text–voice valence mismatch | 6 |
+
+Blocks are standardized, clipped to [-5, 5] and divided by the square root of their dimension before concatenation. Classifiers use class-balanced logistic regression, a 0.5 prediction threshold and three-fold selection of C from `[0.1, 0.5, 2, 10, 50, 300, 1000]` by log loss. Encoders are not fine-tuned. **The final app does not use a gated network.** MUStARD++ emotion/valence/arousal labels are not fed into the classifier; emotion features come from the frozen audio encoder. No personal recordings enter training or evaluation.
+
+Speech reference includes transcript-based speaking-rate features, so it is not completely independent of text. The emotion encoder supports neutral, happy, angry and sad only. Frustration is not a separate class; uncertain outputs are marked mixed. Scores are uncalibrated estimates, not evidence of a person's feelings or a verified sarcasm label.
+
+The optional conflicting-cues flag is a separate, unvalidated polarity heuristic. It does not change the classifier score. It triggers for text valence above 0.5 and voice valence below -0.5, or the reverse. Text valence is P(positive) − P(negative); voice valence is P(happy) − P(angry) − P(sad).
+
+## Does MUStARD++ perform better?
+
+The paired experiment tests the **same 688 shared targets** using three repetitions of five stratified grouped folds, seeds 42–44. Shared IDs, identical normalized target text and identical decoded audio are grouped across both corpora and excluded from each outer test fold's training sets. Each clip's three out-of-fold probabilities are averaged before computing these metrics:
+
+| Model | MUStARD baseline F1 | MUStARD++ F1 |
+|---|---:|---:|
+| Text only | 0.660 | 0.686 |
+| Speech reference | 0.724 | 0.724 |
+| Text + speech | 0.744 | **0.761** |
+
+For MUStARD++ Text + speech, accuracy is **0.751**, macro-F1 **0.751**, precision **0.733** and recall **0.791**. F1 is not accuracy.
+
+The observed multimodal F1 gain is **+0.017**, with a 95% paired group-bootstrap interval of **[-0.007, +0.042]** (2,000 samples). The interval includes zero: this experiment favors MUStARD++ but does not conclusively establish superiority. A size-matched MUStARD++ training control reaches F1 **0.743**, suggesting that additional training volume matters. We select MUStARD++ as the final dataset to satisfy the project requirement, while reporting this uncertainty.
+
+Shared test features use MUStARD++ transcripts, including six corrected shared transcripts. The expanded release has 514 added and two removed IDs relative to the baseline. Outer-fold scalers see only outer training data, but are reused during inner C selection, so inner preprocessing is not fully nested. Grouping exact duplicates cannot remove all related dialogue, episode or speaker effects. This is a development-set comparison, not an untouched external benchmark.
+
+A separate evaluation holds out each of the five shows across all 1,202 targets. Results vary by show. Golden Girls has 39 sarcastic targets out of 40; Sarcasmoholics has 14 out of 14. Their high or unstable F1 scores need caution. See [per-show scores](results/mustardpp/held_out_show.csv). Scripted TV results do not establish accuracy on live microphones or unseen speakers.
+
+## Reproduce training and evaluation
+
+Install `requirements-ui.txt` as above. Run from this repository root:
+
+```sh
+.venv/bin/python experiment/download.py
+.venv/bin/python experiment/prepare_baseline.py
+.venv/bin/python experiment/prepare.py
+.venv/bin/python experiment/compare.py
+```
+
+The downloader checks official annotations against the video mirror and verifies archive SHA-256 values. Preparation extracts target audio at 16 kHz mono and caches frozen features. Comparison writes CSVs, out-of-fold predictions, bootstrap intervals and the report to `results/mustardpp/`, then refits the final app bundle on all 1,202 targets. It leaves the archived baseline model intact. Downloads and private caches stay under ignored `data/` and `truetone/`; they are not committed.
+
+For a final refit from already prepared MUStARD++ features, without rerunning evaluation:
 
 ```sh
 .venv/bin/python scripts/prepare_live_model.py
 ```
 
-This downloads MUStARD if needed, reuses valid feature caches, and fits the final LR models without rerunning the evaluation protocols. Only load trusted local joblib bundles. `TRUETONE_MODEL` overrides the model path; `TRUETONE_PORT` overrides the default 7860 port. Pretrained caches use `HF_HOME` or the local `truetone/hf` directory.
+Alternatively, run all cells of `TrueTone.ipynb`. For headless execution, register the kernel with `.venv/bin/python -m ipykernel install --user --name truetone`, then run `.venv/bin/python scripts/run_notebook.py`. The executed notebook stays under ignored `truetone/`.
 
-## macOS Desktop app
+`TRUETONE_PORT` overrides the standalone port. `TRUETONE_MODEL` can select a trusted local model bundle. `HF_HOME` controls the pretrained-model cache; default is `truetone/hf`. Only load trusted joblib files.
 
-Open **TrueTone.app** from Applications (or the Desktop, if installed there). The app starts the local Python server in the background, shows elapsed startup time, and opens the website when it is ready. No Terminal commands are needed for normal use. The app runs its own server on port 7861 only while open. Closing its window or choosing Quit stops that server, including an analysis in progress. A parent-process watchdog also shuts it down if the app is force-quit. Nothing starts at login or stays running after exit.
-
-Choose **TrueTone > Enable Microphone** if the input device is missing, and grant microphone access. **TrueTone > Open in Browser** is available as a fallback. The first analysis may still take time while encoders load; its progress appears in the website.
-
-The app uses this project folder and its `.venv`; keep both in place. If you move the folder, rebuild the launcher:
-
-```sh
-.venv/bin/python scripts/build_desktop_app.py
-```
-
-To update an app moved into Applications, run `.venv/bin/python scripts/build_desktop_app.py /Applications/TrueTone.app`. Choose **TrueTone > Reload Workspace** (Cmd+R) if the page fails to render. The wrapper uses a fresh web session on launch and attempts one automatic recovery if the renderer stops.
-
-Building requires macOS with Xcode Command Line Tools. Server startup errors are logged in `~/Library/Logs/TrueTone/server.log`. The app stays local; it needs no Vercel deployment or public tunnel.
-
-## Interface and performance
-
-UI colors, spacing and typography are defined in `ui/style.css`; design conventions are documented in `ui/STYLE_GUIDE.md`. Both light and dark modes use the same shared design tokens.
-
-Each analyzed clip also reports estimated voice delivery (neutral, happy, angry, or sad), all four emotion scores, mean pitch when measurable, and transcript-based speaking pace. Ambiguous scores are marked mixed/uncertain. These are uncalibrated model estimates, not evidence of a speaker’s actual feelings or identity. Changing audio, transcript, or model clears the previous result.
-
-The header’s sun/moon **Dark mode** switch changes themes without reloading or clearing the current recording and result. OLED dark mode uses a pure black page, neutral charcoal surfaces, and light text. Fresh launches default to light mode, regardless of system appearance or an old saved preference. The switch enables OLED dark mode for the current session. Theme behavior can be checked with `node --test tests/test_theme.cjs`.
-
-Frozen encoders and tokenizers are now reused in memory for the lifetime of the app, with downloaded checkpoints loaded locally before any network fallback. This avoids rebuilding large models on each clip. The first analysis still loads the models and initializes audio processing; later clips are faster. This uses several GB of RAM while open and releases it when the app exits. No audio/result cache is written by this optimization. Prior output is hidden during analysis so only the progress display is visible.
-
-A local timing check on a 5.17-second clip took 11.88 s for initial model loading plus inference and 0.54 s for the next inference in the same process. Through the running app API, two warm requests (different clips, automatic transcription) took 0.71 s and 0.55 s including client overhead. Extracted features and classifier scores matched the previous pipeline exactly for the checked clip. Timings depend on hardware, memory pressure and clip length; these are measured examples, not latency guarantees.
-
-## Run the research experiment
-
-Python 3.12 recommended. The notebook installs its own dependencies; use an isolated environment.
-
-```sh
-uv venv --python 3.12 .venv
-uv pip install --python .venv/bin/python -r requirements.txt
-.venv/bin/python -m ipykernel install --user --name truetone
-.venv/bin/python scripts/run_notebook.py
-```
-
-Alternatively, open `TrueTone.ipynb` in Jupyter and run all cells. A full run downloads MUStARD clips and four pretrained encoders. CUDA is used when available, otherwise CPU. The original notebook targets a Linux GPU host with 32 GB RAM and about 40 GB disk; CPU execution is substantially slower. ffmpeg is installed via apt on Linux or provided by imageio-ffmpeg as a fallback.
-
-- `TRUETONE_DIR`: data/cache/output root; defaults to writable `/workspace/truetone` or `./truetone`.
-- `TRUETONE_JOBS`: parallel classifier workers, default at most 8.
-- `VAST_PRICE_PER_HOUR`: cost estimate only; does not provision a machine.
-- Full execution writes report, figures, CSVs, OOF predictions and a ZIP under the data root. The executed notebook defaults to `truetone/executed.ipynb`.
-
-## Local verification
+## Verification and document maintenance
 
 ```sh
 .venv/bin/python -m unittest discover -s tests -v
 node --test tests/test_theme.cjs
 ```
 
-This executes actual notebook prosody extraction on generated tone/silence audio, LR and gated-network training on synthetic features, train/test scaling isolation, bootstrap edge cases, notebook validation and supplied result consistency. It does not download or execute the pretrained encoders.
+Tests cover audio validation/resampling, model serialization, feature compatibility, voice estimates, microphone/upload configuration, desktop lifecycle, notebook validity, baseline result consistency and the final MUStARD++ artifact/results. Encoder inference is checked separately using local dataset audio; no private recording is committed. Uploaded-audio inference is verified in the installed app. A physical microphone recording still requires the macOS/WebKit permission check documented in the verification record.
 
-## Archived results
+The final deck retains the supplied design, cover, team details and public repository link. Its charts derive from the saved evaluation CSVs. Maintenance scripts `scripts/update_presentation.py` and `scripts/build_paper.py` regenerate the final documents; slide maintenance additionally needs `defusedxml` (`uv pip install --python .venv/bin/python defusedxml`). The paper source is in the build script, outside `paper/`.
 
-- The supplied experiment is archived in `results/`: report, result tables, figures, and predictions. Report branding has been standardised to TrueTone; numerical results are unchanged.
-- Duplicate root-level ZIP/PDF files have been removed. Saved source-notebook outputs are cleared to distinguish the source from executed runs.
-- `ANALYSIS.md`: code review, findings and execution limitations.
+## Sources
 
-The top-level `results/` files are historical, not the output of the corrected notebook. The original delivery contained no dataset, feature caches or classifier weights. The current repository includes the final LR weights and local microphone demo described above.
+- [Official MUStARD++ annotations](https://github.com/cfiltnlp/MUStARD_Plus_Plus), associated with [Ray et al., LREC 2022](https://aclanthology.org/2022.lrec-1.756/)
+- [MUStARD baseline](https://github.com/soujanyaporia/MUStARD), introduced by [Castro et al., ACL 2019](https://aclanthology.org/P19-1455/)
+- [MUStARD++ video mirror](https://huggingface.co/datasets/sifan077/MUStARD_plus_plus)
 
-Dataset and pretrained models retain their upstream terms; this repository does not bundle videos or pretrained encoder weights. The final LR classifier weights are included for the local demo.
-
-## Completed full run
-
-On 20 November 2026, the complete notebook ran successfully on local CPU in 10.8 minutes: 690 MUStARD examples, 14 models, repeated CV and held-out-show evaluation, all 15 code cells without errors. Fresh results, report and executed notebook are in [`results/local-run-2026-11-20/`](results/local-run-2026-11-20/). Original supplied results remain in `results/`. Best mean CV F1 was 0.7655; best pooled cross-show F1 was 0.6584. See `ANALYSIS.md` for interpretation and limitations.
-
-## Paper and presentation
-
-- [IEEE paper PDF](paper/TrueTone_IEEE_Paper.pdf)
-- [Final presentation](presentations/TrueTone-PID-02.pptx)
-
-The `paper/` folder contains only the final PDF, based on the completed local MUStARD run. The editable manuscript is maintained separately in Overleaf.
-
-## Live prediction limitations and cue contrast
-
-The fullscreen UI uses the available window width. Detailed emotion scores are available under a disclosure so the main result remains readable.
-
-A clip can contain positive wording and negative vocal delivery yet still receive a low sarcasm score from the learned classifier. The interface now flags strong opposing polarities and shows **Conflicting cues — review context** when the classifier is below its 0.5 sarcasm threshold. This is a separate, unvalidated review heuristic: text valence must exceed 0.5 and voice valence be below -0.5 (or the reverse). Text valence is P(positive) - P(negative); voice valence is P(happy) - P(angry) - P(sad). It does not override or recalibrate classifier scores, and is available only in Text + speech mode. No accuracy improvement is claimed from adding this flag.
-
-The emotion encoder has only four categories. A sad-like match can overlap frustrated or subdued delivery; frustration is not classified separately. Reliable improvement on everyday recordings requires diverse labeled recordings and held-out evaluation, rather than a phrase-specific rule or threshold tuned to one recording. The classifier weights and research results are unchanged.
+Dataset and pretrained models retain upstream terms. The repository contains final LR weights, code, PPTX and paper PDF; it does not bundle source videos or frozen encoder checkpoints.
