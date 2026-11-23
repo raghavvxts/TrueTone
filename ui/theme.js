@@ -14,8 +14,8 @@ function applyTheme(nextTheme) {
     document.documentElement.classList.toggle('dark', dark);
     document.body.classList.toggle('dark', dark);
     document.documentElement.style.colorScheme = theme;
-    themeButton.textContent = dark ? 'Light mode' : 'Dark mode';
-    themeButton.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+    themeButton.setAttribute('aria-checked', String(dark));
+    themeButton.setAttribute('title', dark ? 'Switch to light mode' : 'Switch to dark mode');
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#000000' : '#f5f2e9');
 }
 applyTheme(theme);

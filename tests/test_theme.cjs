@@ -32,10 +32,12 @@ test('toggle respects URL, switches both ways and keeps other URL state', () => 
   const p = page('http://localhost/?__theme=dark&recording=keep#result', 'light');
   assert(p.body.classes.has('dark'));
   assert.equal(p.meta.content, '#000000');
-  assert.equal(p.attributes['aria-label'], 'Switch to light mode');
+  assert.equal(p.attributes['aria-checked'], 'true');
+  assert.equal(p.attributes.title, 'Switch to light mode');
   p.click();
   assert(!p.html.classes.has('dark'));
   assert(!p.body.classes.has('dark'));
+  assert.equal(p.attributes['aria-checked'], 'false');
   assert.equal(p.saved(), 'light');
   assert(p.window.location.href.includes('recording=keep#result'));
   p.click();

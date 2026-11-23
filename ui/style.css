@@ -117,13 +117,24 @@ footer { display: none !important; }
 #emotion-details { background: transparent !important; border-color: var(--tt-line) !important; }
 #emotion-details > button { color: var(--tt-muted) !important; font-size: 13px !important; }
 
-#theme-toggle { border: 1px solid var(--tt-line); border-radius: var(--tt-radius); padding: 8px 12px; background: var(--tt-surface); color: var(--tt-ink); font: inherit; cursor: pointer; white-space: nowrap; }
-#theme-toggle:hover { border-color: var(--tt-ink); }
+#theme-toggle { position: relative; display: inline-block; flex: 0 0 64px; width: 64px; height: 44px; border: 0; padding: 0; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+#theme-toggle::before { content: ""; position: absolute; inset: 5px 0; border-radius: 999px; background: #cecece; box-shadow: inset 0 0 0 1px #00000012; transition: background .2s ease; }
+.tt-switch-thumb { position: absolute; top: 8px; left: 3px; width: 28px; height: 28px; border-radius: 50%; background: #fff; color: #555; box-shadow: 0 1px 4px #0003; transition: transform .2s ease; }
+.tt-switch-thumb svg { position: absolute; width: 18px; height: 18px; inset: 5px; transition: opacity .15s ease; }
+.tt-switch-moon { opacity: 0; fill: #161616 !important; }
+.tt-switch-sun { stroke: #555555 !important; }
+#theme-toggle[aria-checked="true"]::before { background: #414141; box-shadow: inset 0 0 0 1px #ffffff20; }
+#theme-toggle[aria-checked="true"] .tt-switch-thumb { transform: translateX(30px); color: #161616; }
+#theme-toggle[aria-checked="true"] .tt-switch-sun { opacity: 0; }
+#theme-toggle[aria-checked="true"] .tt-switch-moon { opacity: 1; }
+#theme-toggle:hover::before { filter: brightness(.93); }
+@media (prefers-reduced-motion: reduce) {
+  #theme-toggle::before, .tt-switch-thumb, .tt-switch-thumb svg { transition: none !important; }
+}
 .dark .gradio-container { --color-accent: #d4d4d4; --color-accent-soft: #262626; --loader-color: #d4d4d4; }
 .dark #recognized textarea { background: #101010 !important; }
 @media (max-width: 540px) {
   .tt-masthead { gap: 12px; }
   .tt-masthead-right { gap: 10px; font-size: 12px; }
   .tt-masthead-right .tt-project { display: none; }
-  #theme-toggle { padding: 8px; }
 }
