@@ -5,6 +5,7 @@ import json
 import os
 import re
 import tempfile
+from collections import Counter
 from functools import lru_cache
 from pathlib import Path
 
@@ -200,6 +201,16 @@ def transcriber():
                     feature_extractor=pretrained_component('AutoFeatureExtractor', 'openai/whisper-tiny.en'), device=-1)
 
 
+def validate_auto_transcript(text, duration):
+    """Reject obvious ASR repetition/runaway output before it becomes model input."""
+    words = re.findall(r"[A-Za-z0-9']+", text.lower())
+    triples = Counter(zip(words, words[1:], words[2:]))
+    repetitive = len(words) >= 20 and max(triples.values(), default=0) >= len(words) * .2
+    if len(text) > 2000 or len(words) > max(12, duration * 8) or repetitive:
+        raise ValueError('Automatic transcription looks unreliable. Record again in a quiet room, '
+                         'or enter the exact spoken words under Adjust transcript or model.')
+
+
 class Predictor:
     def __init__(self, path=MODEL_PATH):
         path = Path(path)
@@ -221,6 +232,7 @@ class Predictor:
         if not transcript:
             progress(.15, desc='Transcribing your recording')
             transcript = transcriber()({'raw': samples, 'sampling_rate': 16000})['text'].strip()
+            validate_auto_transcript(transcript, len(samples) / 16000)
         if not re.search(r'[A-Za-z0-9]', transcript):
             raise ValueError('No speech was recognised. Try again or enter the transcript.')
         contrast = ''

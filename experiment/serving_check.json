@@ -45,7 +45,7 @@
   "loading_hides_previous_result": true,
   "shutdown_port_closed": true,
   "note": "Serving smoke checks use dataset clips, including training targets; these are functional checks, not accuracy estimates. No personal audio included.",
-  "physical_recording": "Chrome captured 15.18s of zero-valued samples with the MacBook lid closed; silence was rejected. Non-silent microphone inference remains pending.",
+  "physical_recording": "Verified in the installed desktop app with the lid open and built-in MacBook microphone, on 24 November 2026. No personal audio/transcript/scores retained in this record.",
   "microphone_capture_check": {
     "browser": "Chrome",
     "sample_rate": 44100,
@@ -54,5 +54,21 @@
     "rms": 0,
     "lid_closed": true,
     "silence_rejected": true
+  },
+  "live_microphone_check": {
+    "date": "2026-11-24",
+    "device": "Built-in MacBook microphone",
+    "airpods_used": false,
+    "sample_rate": 44100,
+    "duration_seconds": 4.627482993197279,
+    "non_silent": true,
+    "ui_outputs_verified": true,
+    "api_modes_verified": [
+      "Text + speech",
+      "Speech reference"
+    ],
+    "automatic_transcript_needs_review": true,
+    "observed_asr_repetition_rejected": true,
+    "accuracy_benchmark": false
   }
 }

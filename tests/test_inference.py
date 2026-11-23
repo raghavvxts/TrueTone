@@ -8,10 +8,26 @@ from unittest.mock import patch
 
 import numpy as np
 
-from inference import BLOCKS, Predictor, fit_bundle, predict_features, prepare_audio, describe_voice, cue_contrast
+from inference import BLOCKS, Predictor, fit_bundle, predict_features, prepare_audio, describe_voice, cue_contrast, validate_auto_transcript
 
 
 class InferenceTests(unittest.TestCase):
+    def test_auto_transcript_rejects_observed_repetition_and_runaway_output(self):
+        for text, duration in [('Thank you. ' * 150, 14), ('Thank you. ' * 15, 20),
+                               (' '.join(f'word{i}' for i in range(90)), 5), ('a' * 2001, 30)]:
+            with self.subTest(duration=duration):
+                with self.assertRaisesRegex(ValueError, 'transcription looks unreliable'):
+                    validate_auto_transcript(text, duration)
+        for text, duration in [('Thank you.', 1), ('This is a microphone test for TrueTone.', 5),
+                               ('Wonderful, I have another meeting.', 5)]:
+            validate_auto_transcript(text, duration)
+        wave = .2 * np.sin(2*np.pi*180*np.arange(16000)/16000)
+        with patch('inference.transcriber', return_value=Mock(return_value={'text': 'Thank you. ' * 150})), \
+             patch('inference.feature_runtime') as encoders:
+            with self.assertRaisesRegex(ValueError, 'transcription looks unreliable'):
+                Predictor().predict((16000, wave))
+            encoders.assert_not_called()
+
     def test_audio_validation_and_resampling(self):
         rate = 48000
         wave = (12000*np.sin(2*np.pi*180*np.arange(rate)/rate)).astype(np.int16)

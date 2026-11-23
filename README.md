@@ -76,6 +76,8 @@ Blocks are standardized, clipped to [-5, 5] and divided by the square root of th
 
 Speech reference includes transcript-based speaking-rate features, so it is not completely independent of text. The emotion encoder supports neutral, happy, angry and sad only. Frustration is not a separate class; uncertain outputs are marked mixed. Scores are uncalibrated estimates, not evidence of a person's feelings or a verified sarcasm label.
 
+Automatic transcription is checked for obvious repetition and implausibly long output before classification. If that check fails, record again or enter the exact spoken words under **Adjust transcript or model**. This is a heuristic safeguard, not a calibrated ASR confidence score; genuinely repetitive speech may need a manual transcript.
+
 The optional conflicting-cues flag is a separate, unvalidated polarity heuristic. It does not change the classifier score. It triggers for text valence above 0.5 and voice valence below -0.5, or the reverse. Text valence is P(positive) − P(negative); voice valence is P(happy) − P(angry) − P(sad).
 
 ## Does MUStARD++ perform better?
@@ -126,7 +128,7 @@ Alternatively, run all cells of `TrueTone.ipynb`. For headless execution, regist
 node --test tests/test_theme.cjs
 ```
 
-Tests cover audio validation/resampling, model serialization, feature compatibility, voice estimates, microphone/upload configuration, desktop lifecycle, notebook validity, baseline result consistency and the final MUStARD++ artifact/results. Encoder inference is checked separately using local dataset audio; no private recording is committed. Uploaded-audio inference is verified in the installed app. A physical microphone recording still requires the macOS/WebKit permission check documented in the verification record.
+Tests cover audio validation/resampling, model serialization, feature compatibility, voice estimates, microphone/upload configuration, desktop lifecycle, notebook validity, baseline result consistency and the final MUStARD++ artifact/results. Encoder inference is checked separately using local dataset audio; no private recording is committed. Uploaded-audio inference and built-in MacBook microphone recording were verified in the installed app on 24 November 2026. Both serving models returned transcripts, sarcasm scores and voice estimates from the live clip. Automatic transcription can mishear words; review it and enter the exact words when needed.
 
 The final deck retains the supplied design, cover, team details and public repository link. Its charts derive from the saved evaluation CSVs. Maintenance scripts `scripts/update_presentation.py` and `scripts/build_paper.py` regenerate the final documents; slide maintenance additionally needs `defusedxml` (`uv pip install --python .venv/bin/python defusedxml`). The paper source is in the build script, outside `paper/`.
 
