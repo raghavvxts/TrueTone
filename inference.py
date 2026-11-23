@@ -44,16 +44,33 @@ def feature_signature():
     return hashlib.sha256(ast.dump(notebook_definitions(), include_attributes=False).encode()).hexdigest()
 
 
+@lru_cache(maxsize=12)
+def pretrained_component(class_name, name):
+    """Keep frozen encoders in RAM while the app is open; prefer downloaded files."""
+    import transformers
+    factory = getattr(transformers, class_name)
+    try:
+        return factory.from_pretrained(name, local_files_only=True)
+    except OSError:
+        return factory.from_pretrained(name)
+
+
+class CachedPretrained:
+    def __init__(self, class_name):
+        self.class_name = class_name
+
+    def from_pretrained(self, name):
+        return pretrained_component(self.class_name, name)
+
+
 def feature_runtime(cache_dir):
     from tqdm.auto import tqdm
-    from transformers import AutoTokenizer, AutoModel, AutoModelForSequenceClassification, AutoFeatureExtractor, AutoModelForAudioClassification
     # Execute only the named feature definitions from our trusted project notebook.
     # Setup, downloads, evaluation cells and arbitrary notebook outputs are not executed.
     namespace = dict(np=np, torch=torch, sf=sf, librosa=librosa, json=json, tqdm=tqdm,
                      DEVICE='cuda' if torch.cuda.is_available() else 'cpu', CACHE=Path(cache_dir), CACHE_KEY='live',
-                     AutoTokenizer=AutoTokenizer, AutoModel=AutoModel,
-                     AutoModelForSequenceClassification=AutoModelForSequenceClassification,
-                     AutoFeatureExtractor=AutoFeatureExtractor, AutoModelForAudioClassification=AutoModelForAudioClassification)
+                     **{name: CachedPretrained(name) for name in ('AutoTokenizer', 'AutoModel',
+                     'AutoModelForSequenceClassification', 'AutoFeatureExtractor', 'AutoModelForAudioClassification')})
     exec(compile(notebook_definitions(), str(ROOT / 'TrueTone.ipynb'), 'exec'), namespace)
     return namespace
 
@@ -176,7 +193,10 @@ def predict_features(bundle, features, model_name):
 @lru_cache(maxsize=1)
 def transcriber():
     from transformers import pipeline
-    return pipeline('automatic-speech-recognition', model='openai/whisper-tiny.en', device=-1)
+    return pipeline('automatic-speech-recognition',
+                    model=pretrained_component('AutoModelForSpeechSeq2Seq', 'openai/whisper-tiny.en'),
+                    tokenizer=pretrained_component('AutoTokenizer', 'openai/whisper-tiny.en'),
+                    feature_extractor=pretrained_component('AutoFeatureExtractor', 'openai/whisper-tiny.en'), device=-1)
 
 
 class Predictor:

@@ -138,3 +138,8 @@ footer { display: none !important; }
   .tt-masthead-right { gap: 10px; font-size: 12px; }
   .tt-masthead-right .tt-project { display: none; }
 }
+
+/* Keep the progress indicator visible while hiding placeholders and stale results. */
+#output-pane:has(#result > [data-testid="status-tracker"]:not(.hide)) :is(#result [data-testid="markdown-wrapper"], #scores, #voice-profile, #emotion-details, #recognized) {
+  visibility: hidden !important;
+}

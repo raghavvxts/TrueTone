@@ -2,6 +2,8 @@
 from pathlib import Path
 import tempfile
 import unittest
+from types import SimpleNamespace
+from unittest.mock import Mock
 from unittest.mock import patch
 
 import numpy as np
@@ -57,6 +59,21 @@ class InferenceTests(unittest.TestCase):
         self.assertIn('Conflicting cues', details)
         self.assertIn('Classifier prediction:** Not sarcastic', details)
         self.assertIn('polarity heuristic', details)
+
+    def test_frozen_components_reuse_local_weights_and_fallback(self):
+        from inference import pretrained_component, CachedPretrained
+        pretrained_component.cache_clear()
+        factory = Mock()
+        with patch.dict('sys.modules', {'transformers': SimpleNamespace(AutoModel=factory)}):
+            first = CachedPretrained('AutoModel').from_pretrained('checkpoint')
+            self.assertIs(first, CachedPretrained('AutoModel').from_pretrained('checkpoint'))
+            factory.from_pretrained.assert_called_once_with('checkpoint', local_files_only=True)
+            factory.from_pretrained.reset_mock()
+            factory.from_pretrained.side_effect = [OSError('not downloaded'), object()]
+            pretrained_component('AutoModel', 'new-checkpoint')
+            self.assertEqual(factory.from_pretrained.call_count, 2)
+            factory.from_pretrained.assert_called_with('new-checkpoint')
+        pretrained_component.cache_clear()
 
     def test_bundle_roundtrip_and_prediction(self):
         rng = np.random.default_rng(42)

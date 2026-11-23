@@ -86,7 +86,7 @@ def create_app():
         with gr.Accordion('About the model and its limits', open=False, elem_id='method'):
             gr.Markdown('The local demo currently uses a classifier trained on the original MUStARD dataset. The externally trained MUStARD++ model has not yet been connected on this machine.\n\nLocal speech recognition supplies the transcript. The research notebook’s frozen encoders extract speech, prosody, emotion, text and sentiment features. A final logistic-regression classifier predicts sarcasm at a 0.5 threshold. Scores are uncalibrated. The speech reference also uses transcript word counts for speaking-rate features. This is a recording-based demo, not continuous streaming.\n\n[Project and evaluation results](https://github.com/raghavvxts/TrueTone)')
         outputs = [scores, recognized, result, voice, emotion_scores]
-        prediction = submit.click(analyze, inputs=[audio, transcript, model], outputs=outputs, api_name='analyze', concurrency_limit=1)
+        prediction = submit.click(analyze, inputs=[audio, transcript, model], outputs=outputs, api_name='analyze', concurrency_limit=1, show_progress_on=[result])
         audio.change(lambda: ('', None, '', EMPTY_RESULT, '', None), outputs=[transcript, *outputs], cancels=[prediction], queue=False)
         for control in (transcript, model):
             control.input(lambda: (None, '', EMPTY_RESULT, '', None), outputs=outputs, cancels=[prediction], queue=False)
