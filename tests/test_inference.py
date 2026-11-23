@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 import numpy as np
 
-from inference import BLOCKS, Predictor, fit_bundle, predict_features, prepare_audio, describe_voice
+from inference import BLOCKS, Predictor, fit_bundle, predict_features, prepare_audio, describe_voice, cue_contrast
 
 
 class InferenceTests(unittest.TestCase):
@@ -31,7 +31,7 @@ class InferenceTests(unittest.TestCase):
         labels = ['neu', 'hap', 'ang', 'sad']
         text, scores = describe_voice([[.1, .7, .1, .1]], labels,
                                      {'f0_mean': 180, 'f0_voiced_frac': .8, 'words_per_sec': 2})
-        self.assertIn('Voice tone: Happy', text)
+        self.assertIn('Voice category estimate: Happy-like', text)
         self.assertIn('180 Hz', text)
         self.assertIn('120 words/min', text)
         self.assertEqual(scores['Happy'], .7)
@@ -40,6 +40,23 @@ class InferenceTests(unittest.TestCase):
         self.assertIn('Pitch unavailable', text)
         with self.assertRaises(RuntimeError):
             describe_voice([[float('nan')]*4], labels, {})
+
+    def test_contrast_flag_does_not_override_classifier_score(self):
+        self.assertEqual(cue_contrast(.95, -.98), 'Positive wording / negative vocal delivery')
+        self.assertEqual(cue_contrast(-.8, .9), 'Negative wording / positive vocal delivery')
+        self.assertEqual(cue_contrast(.1, -.98), '')
+        self.assertEqual(cue_contrast(.8, .8), '')
+        with self.assertRaises(ValueError):
+            cue_contrast(float('nan'), -.9)
+        from app import analyze
+        contrast = cue_contrast(.95, -.98)
+        with patch('app.predictor') as predictor:
+            predictor.return_value.predict.return_value = (.073, 'Test utterance', 5.2, 'Voice estimate', {'Sad': .98}, contrast)
+            scores, words, details, voice, emotions = analyze(None, '', 'Text + speech')
+        self.assertEqual(scores['Sarcastic'], .073)
+        self.assertIn('Conflicting cues', details)
+        self.assertIn('Classifier prediction:** Not sarcastic', details)
+        self.assertIn('polarity heuristic', details)
 
     def test_bundle_roundtrip_and_prediction(self):
         rng = np.random.default_rng(42)

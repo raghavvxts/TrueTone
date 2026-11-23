@@ -38,4 +38,4 @@ def build(destination):
 if __name__ == '__main__':
     if sys.platform != 'darwin':
         raise SystemExit('The Desktop wrapper requires macOS and Xcode Command Line Tools.')
-    build(Path.home() / 'Desktop/TrueTone.app')
+    build(Path(sys.argv[1]).expanduser() if len(sys.argv) > 1 else Path.home() / 'Desktop/TrueTone.app')

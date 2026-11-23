@@ -102,16 +102,28 @@ def describe_voice(emotion, labels, prosody):
     order = np.argsort(values)[::-1]
     best, second = order[:2]
     uncertain = values[best] < .6 or values[best] - values[second] < .15
-    title = f'Mixed / uncertain (closest: {names[labels[best]].lower()})' if uncertain else names[labels[best]]
+    title = f'Mixed / uncertain (closest: {names[labels[best]].lower()})' if uncertain else names[labels[best]] + '-like'
     pitch = prosody.get('f0_mean', 0)
     pitch_text = (f'{pitch:.0f} Hz estimated mean pitch' if pitch > 0 and
                   prosody.get('f0_voiced_frac', 0) >= .1 else 'Pitch unavailable')
     pace = prosody.get('words_per_sec', 0) * 60
-    description = (f'### Voice tone: {title}\n'
+    description = (f'### Voice category estimate: {title}\n'
                    f'**Top emotion score:** {values[best]:.1%}\n\n'
                    f'{pitch_text} · {pace:.0f} words/min estimated from transcript\n\n'
-                   'Delivery estimate only. Emotion scores are uncalibrated; they do not establish the speaker’s actual feelings.')
+                   'Closest match among neutral, happy, angry and sad. Frustration is not a supported class. '
+                   'These uncalibrated scores do not establish the speaker’s feelings.')
     return description, {names[label]: float(value) for label, value in zip(labels, values)}
+
+
+def cue_contrast(text_valence, speech_valence):
+    """Flag strong opposing polarities; this heuristic is not a sarcasm classifier."""
+    if not all(np.isfinite(v) and -1.00001 <= v <= 1.00001 for v in (text_valence, speech_valence)):
+        raise ValueError('Invalid polarity values.')
+    if text_valence > .5 and speech_valence < -.5:
+        return 'Positive wording / negative vocal delivery'
+    if text_valence < -.5 and speech_valence > .5:
+        return 'Negative wording / positive vocal delivery'
+    return ''
 
 
 def fit_bundle(features, labels, config, prosody_names, emotion_labels, ids, path=MODEL_PATH):
@@ -190,6 +202,7 @@ class Predictor:
             transcript = transcriber()({'raw': samples, 'sampling_rate': 16000})['text'].strip()
         if not re.search(r'[A-Za-z0-9]', transcript):
             raise ValueError('No speech was recognised. Try again or enter the transcript.')
+        contrast = ''
         config = self.bundle['config']
         with tempfile.TemporaryDirectory(prefix='truetone-live-') as temp:
             path = Path(temp) / 'recording.wav'
@@ -210,6 +223,7 @@ class Predictor:
                 sentiment = runtime['text_sentiment']([transcript], config['sentiment_model'])
                 vt = float(sentiment[0, 2] - sentiment[0, 0])
                 vs = float(emotion[0] @ np.array([runtime['emo_valence'](s) for s in labels], dtype=np.float32))
+                contrast = cue_contrast(vt, vs)
                 features['text_sent'] = sentiment
                 features['mismatch'] = np.array([[vt, vs, vt-vs, abs(vt-vs), vt*vs,
                     float(vt*vs < 0 and abs(vt) > .1 and abs(vs) > .1)]], dtype=np.float32)
@@ -217,4 +231,4 @@ class Predictor:
             probability = predict_features(self.bundle, features, model_name)
         progress(1, desc='Complete')
         voice, emotion_scores = describe_voice(emotion, labels, prosody)
-        return probability, transcript, len(samples)/16000, voice, emotion_scores
+        return probability, transcript, len(samples)/16000, voice, emotion_scores, contrast

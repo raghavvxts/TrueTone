@@ -9,3 +9,5 @@ Use plain task language. Keep scores, transcripts and limitations accurate. Neve
 Direction informed by Brad Hussey's article: https://bradhussey.ca/web-design/make-ai-built-website-not-look-ai-generated/
 
 The shared logo lives in `assets/`. Use the speech-bubble/waveform icon beside the TrueTone wordmark, as the browser favicon, and for the Desktop app and startup screen. Keep its aspect ratio and built-in safe margin.
+
+The workspace is fluid across the available window width, with modest responsive edge padding. Avoid fixed desktop width caps that create large fullscreen gutters. Keep detailed emotion scores behind a disclosure. Distinguish classifier predictions from the separate polarity-contrast heuristic and emotion category matches.

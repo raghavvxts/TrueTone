@@ -14,6 +14,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKUIDelegate, WKNaviga
     var started = Date()
     var checking = false
     var finished = false
+    var recoveredWebProcess = false
     let address = URL(string: "http://127.0.0.1:7861/?__theme=light")!
     let log = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Logs/TrueTone/server.log")
 
@@ -24,6 +25,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKUIDelegate, WKNaviga
         let appMenu = NSMenu()
         appMenu.addItem(withTitle: "Enable Microphone", action: #selector(enableMicrophone), keyEquivalent: "m")
         appMenu.addItem(withTitle: "Open in Browser", action: #selector(openBrowser), keyEquivalent: "o")
+        appMenu.addItem(withTitle: "Reload Workspace", action: #selector(reloadWorkspace), keyEquivalent: "r")
         appMenu.addItem(withTitle: "Close Window", action: #selector(closeWindow), keyEquivalent: "w")
         appMenu.addItem(withTitle: "Quit TrueTone", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         item.submenu = appMenu
@@ -33,7 +35,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKUIDelegate, WKNaviga
         window.title = "TrueTone"
         window.minSize = NSSize(width: 390, height: 600)
         window.center()
-        web = WKWebView(frame: window.contentView!.bounds)
+        let configuration = WKWebViewConfiguration()
+        configuration.websiteDataStore = .nonPersistent()
+        web = WKWebView(frame: window.contentView!.bounds, configuration: configuration)
         web.autoresizingMask = [.width, .height]
         web.uiDelegate = self
         web.navigationDelegate = self
@@ -182,6 +186,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKUIDelegate, WKNaviga
                 }
             }
         }
+    }
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        if recoveredWebProcess {
+            fail("The website renderer stopped. Use Reload Workspace or Open in Browser from the TrueTone menu.")
+        } else {
+            recoveredWebProcess = true
+            reloadWorkspace()
+        }
+    }
+    @objc func reloadWorkspace() {
+        status.stringValue = "Reloading your local workspace…"
+        loading.isHidden = false
+        web.load(URLRequest(url: address, cachePolicy: .reloadIgnoringLocalCacheData))
     }
     @objc func closeWindow() { window.performClose(nil) }
     @objc func openBrowser() { NSWorkspace.shared.open(address) }

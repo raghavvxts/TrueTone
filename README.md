@@ -49,6 +49,8 @@ The app uses this project folder and its `.venv`; keep both in place. If you mov
 .venv/bin/python scripts/build_desktop_app.py
 ```
 
+To update an app moved into Applications, run `.venv/bin/python scripts/build_desktop_app.py /Applications/TrueTone.app`. Choose **TrueTone > Reload Workspace** (Cmd+R) if the page fails to render. The wrapper uses a fresh web session on launch and attempts one automatic recovery if the renderer stops.
+
 Building requires macOS with Xcode Command Line Tools. Server startup errors are logged in `~/Library/Logs/TrueTone/server.log`. The app stays local; it needs no Vercel deployment or public tunnel.
 
 ## Run the research experiment
@@ -101,3 +103,11 @@ The `paper/` folder contains only the final PDF, based on the completed local MU
 UI colors, spacing and typography are defined in `ui/style.css`; design conventions are documented in `ui/STYLE_GUIDE.md`. Both light and dark modes use the same shared design tokens.
 
 Each analyzed clip also reports estimated voice delivery (neutral, happy, angry, or sad), all four emotion scores, mean pitch when measurable, and transcript-based speaking pace. Ambiguous scores are marked mixed/uncertain. These are uncalibrated model estimates, not evidence of a speaker’s actual feelings or identity. Changing audio, transcript, or model clears the previous result.
+
+## Live prediction limitations and cue contrast
+
+The fullscreen UI uses the available window width. Detailed emotion scores are available under a disclosure so the main result remains readable.
+
+A clip can contain positive wording and negative vocal delivery yet still receive a low sarcasm score from the learned classifier. The interface now flags strong opposing polarities and shows **Conflicting cues — review context** when the classifier is below its 0.5 sarcasm threshold. This is a separate, unvalidated review heuristic: text valence must exceed 0.5 and voice valence be below -0.5 (or the reverse). Text valence is P(positive) - P(negative); voice valence is P(happy) - P(angry) - P(sad). It does not override or recalibrate classifier scores, and is available only in Text + speech mode. No accuracy improvement is claimed from adding this flag.
+
+The emotion encoder has only four categories. A sad-like match can overlap frustrated or subdued delivery; frustration is not classified separately. Reliable improvement on everyday recordings requires diverse labeled recordings and held-out evaluation, rather than a phrase-specific rule or threshold tuned to one recording. The classifier weights and research results are unchanged.

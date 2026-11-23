@@ -15,13 +15,19 @@ def predictor():
 
 def analyze(audio, transcript, model, progress=gr.Progress()):
     try:
-        score, words, duration, voice, emotion_scores = predictor().predict(audio, transcript, model, progress)
+        score, words, duration, voice, emotion_scores, contrast = predictor().predict(audio, transcript, model, progress)
     except (ValueError, RuntimeError, OSError) as error:
         raise gr.Error(str(error)) from error
     verdict = 'Sarcastic' if score >= .5 else 'Not sarcastic'
-    details = (f'### {verdict}\n'
+    heading = 'Conflicting cues — review context' if contrast and score < .5 else f'Model predicts: {verdict.lower()}'
+    details = (f'### {heading}\n'
+               f'**Classifier prediction:** {verdict}\n\n'
                f'**Sarcasm score:** {score:.1%}\n\n'
-               f'{duration:.1f}s recording · {model}')
+               f'{duration:.1f}s recording · {model}\n\n'
+               'A model estimate, not a verified label. Sarcasm can depend on context beyond this clip.')
+    if contrast:
+        details += (f'\n\n**Cue contrast:** {contrast}. This can occur in sarcasm. '
+                    'This is a polarity heuristic, not a second classifier or a verified label.')
     return {'Sarcastic': score, 'Not sarcastic': 1-score}, words, details, voice, emotion_scores
 
 
@@ -65,7 +71,8 @@ def create_app():
                 result = gr.Markdown(EMPTY_RESULT, elem_id='result')
                 scores = gr.Label(label='Model scores', num_top_classes=2, show_heading=False, container=False, elem_id='scores')
                 voice = gr.Markdown('', elem_id='voice-profile')
-                emotion_scores = gr.Label(label='Voice emotion scores', num_top_classes=4, show_heading=False, container=False, elem_id='emotion-scores')
+                with gr.Accordion('Voice emotion scores', open=False, elem_id='emotion-details'):
+                    emotion_scores = gr.Label(label='Voice emotion scores', num_top_classes=4, show_heading=False, container=False, elem_id='emotion-scores')
                 recognized = gr.Textbox(label='Transcript used', placeholder='The spoken words will appear here.', interactive=False, lines=2, elem_id='recognized')
         gr.HTML("""<div class="tt-footnote"><p>MUStARD++ interface preview. Integration of the externally trained model is pending. Scores currently come from the local demo model.</p>
           <p class="tt-local">Audio processed locally<br>First use downloads pretrained models</p></div>""")
