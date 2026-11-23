@@ -3,7 +3,7 @@ const {test} = require('node:test');
 const {readFileSync} = require('node:fs');
 const vm = require('node:vm');
 const source = readFileSync(new URL('../ui/theme.js', `file://${__filename}`), 'utf8');
-function page(url, saved, storageBlocked = false) {
+function page(url) {
   const node = () => ({classes: new Set(), style: {}, classList: {
     toggle(name, enabled) { enabled ? this.owner.classes.add(name) : this.owner.classes.delete(name); },
     remove(name) { this.owner.classes.delete(name); }
@@ -16,8 +16,8 @@ function page(url, saved, storageBlocked = false) {
   const window = {
     location: {href: url}, matchMedia: () => ({matches: true}),
     localStorage: {
-      getItem() {if (storageBlocked) throw Error('blocked'); return saved;},
-      setItem(key, value) {if (storageBlocked) throw Error('blocked'); saved = value;}
+      getItem() {throw Error('Theme must not read old preferences');},
+      setItem() {throw Error('Theme must not persist across fresh launches');}
     },
     history: {state: null, replaceState(state, title, next) {window.location.href = String(next);}}
   };
@@ -26,10 +26,10 @@ function page(url, saved, storageBlocked = false) {
     querySelector: () => ({setAttribute(key, value) {meta[key] = value;}})
   };
   vm.runInNewContext(source, {element: {querySelector: () => button}, document, window, URL});
-  return {html, body, attributes, meta, button, window, click: () => click(), saved: () => saved};
+  return {html, body, attributes, meta, button, window, click: () => click()};
 }
 test('toggle respects URL, switches both ways and keeps other URL state', () => {
-  const p = page('http://localhost/?__theme=dark&recording=keep#result', 'light');
+  const p = page('http://localhost/?__theme=dark&recording=keep#result');
   assert(p.body.classes.has('dark'));
   assert.equal(p.meta.content, '#000000');
   assert.equal(p.attributes['aria-checked'], 'true');
@@ -43,9 +43,9 @@ test('toggle respects URL, switches both ways and keeps other URL state', () => 
   assert.equal(p.meta.content, '#000000');
 });
 test('fresh launches stay light despite dark system or old saved preference', () => {
-  assert(!page('http://localhost/', 'dark').body.classes.has('dark'));
-  assert(!page('http://localhost/?__theme=invalid', 'dark').body.classes.has('dark'));
-  const p = page('http://localhost/', null, true);
+  assert(!page('http://localhost/').body.classes.has('dark'));
+  assert(!page('http://localhost/?__theme=invalid').body.classes.has('dark'));
+  const p = page('http://localhost/');
   p.click();
   assert(p.body.classes.has('dark'));
 });

@@ -39,7 +39,7 @@ This downloads MUStARD if needed, reuses valid feature caches, and fits the fina
 
 ## macOS Desktop app
 
-Double-click **TrueTone.app** on your Desktop. The app starts the local Python server in the background, shows elapsed startup time, and opens the website when it is ready. No Terminal commands are needed for normal use. The app runs its own server on port 7861 only while open. Closing its window or choosing Quit stops that server, including an analysis in progress. A parent-process watchdog also shuts it down if the app is force-quit. Nothing starts at login or stays running after exit.
+Open **TrueTone.app** from Applications (or the Desktop, if installed there). The app starts the local Python server in the background, shows elapsed startup time, and opens the website when it is ready. No Terminal commands are needed for normal use. The app runs its own server on port 7861 only while open. Closing its window or choosing Quit stops that server, including an analysis in progress. A parent-process watchdog also shuts it down if the app is force-quit. Nothing starts at login or stays running after exit.
 
 Choose **TrueTone > Enable Microphone** if the input device is missing, and grant microphone access. **TrueTone > Open in Browser** is available as a fallback. The first analysis may still take time while encoders load; its progress appears in the website.
 
@@ -52,6 +52,18 @@ The app uses this project folder and its `.venv`; keep both in place. If you mov
 To update an app moved into Applications, run `.venv/bin/python scripts/build_desktop_app.py /Applications/TrueTone.app`. Choose **TrueTone > Reload Workspace** (Cmd+R) if the page fails to render. The wrapper uses a fresh web session on launch and attempts one automatic recovery if the renderer stops.
 
 Building requires macOS with Xcode Command Line Tools. Server startup errors are logged in `~/Library/Logs/TrueTone/server.log`. The app stays local; it needs no Vercel deployment or public tunnel.
+
+## Interface and performance
+
+UI colors, spacing and typography are defined in `ui/style.css`; design conventions are documented in `ui/STYLE_GUIDE.md`. Both light and dark modes use the same shared design tokens.
+
+Each analyzed clip also reports estimated voice delivery (neutral, happy, angry, or sad), all four emotion scores, mean pitch when measurable, and transcript-based speaking pace. Ambiguous scores are marked mixed/uncertain. These are uncalibrated model estimates, not evidence of a speaker’s actual feelings or identity. Changing audio, transcript, or model clears the previous result.
+
+The header’s sun/moon **Dark mode** switch changes themes without reloading or clearing the current recording and result. OLED dark mode uses a pure black page, neutral charcoal surfaces, and light text. Fresh launches default to light mode, regardless of system appearance or an old saved preference. The switch enables OLED dark mode for the current session. Theme behavior can be checked with `node --test tests/test_theme.cjs`.
+
+Frozen encoders and tokenizers are now reused in memory for the lifetime of the app, with downloaded checkpoints loaded locally before any network fallback. This avoids rebuilding large models on each clip. The first analysis still loads the models and initializes audio processing; later clips are faster. This uses several GB of RAM while open and releases it when the app exits. No audio/result cache is written by this optimization. Prior output is hidden during analysis so only the progress display is visible.
+
+A local timing check on a 5.17-second clip took 11.88 s for initial model loading plus inference and 0.54 s for the next inference in the same process. Through the running app API, two warm requests (different clips, automatic transcription) took 0.71 s and 0.55 s including client overhead. Extracted features and classifier scores matched the previous pipeline exactly for the checked clip. Timings depend on hardware, memory pressure and clip length; these are measured examples, not latency guarantees.
 
 ## Run the research experiment
 
@@ -75,6 +87,7 @@ Alternatively, open `TrueTone.ipynb` in Jupyter and run all cells. A full run do
 
 ```sh
 .venv/bin/python -m unittest discover -s tests -v
+node --test tests/test_theme.cjs
 ```
 
 This executes actual notebook prosody extraction on generated tone/silence audio, LR and gated-network training on synthetic features, train/test scaling isolation, bootstrap edge cases, notebook validation and supplied result consistency. It does not download or execute the pretrained encoders.
@@ -85,7 +98,7 @@ This executes actual notebook prosody extraction on generated tone/silence audio
 - Duplicate root-level ZIP/PDF files have been removed. Saved source-notebook outputs are cleared to distinguish the source from executed runs.
 - `ANALYSIS.md`: code review, findings and execution limitations.
 
-The top-level `results/` files are historical, not the output of the corrected notebook. No dataset, feature caches, or trained classifier weights were supplied. The original notebook is an experiment pipeline. A local microphone demo is available in the section above.
+The top-level `results/` files are historical, not the output of the corrected notebook. The original delivery contained no dataset, feature caches or classifier weights. The current repository includes the final LR weights and local microphone demo described above.
 
 Dataset and pretrained models retain their upstream terms; this repository does not bundle videos or pretrained encoder weights. The final LR classifier weights are included for the local demo.
 
@@ -100,10 +113,6 @@ On 20 November 2026, the complete notebook ran successfully on local CPU in 10.8
 
 The `paper/` folder contains only the final PDF, based on the completed local MUStARD run. The editable manuscript is maintained separately in Overleaf.
 
-UI colors, spacing and typography are defined in `ui/style.css`; design conventions are documented in `ui/STYLE_GUIDE.md`. Both light and dark modes use the same shared design tokens.
-
-Each analyzed clip also reports estimated voice delivery (neutral, happy, angry, or sad), all four emotion scores, mean pitch when measurable, and transcript-based speaking pace. Ambiguous scores are marked mixed/uncertain. These are uncalibrated model estimates, not evidence of a speaker’s actual feelings or identity. Changing audio, transcript, or model clears the previous result.
-
 ## Live prediction limitations and cue contrast
 
 The fullscreen UI uses the available window width. Detailed emotion scores are available under a disclosure so the main result remains readable.
@@ -111,9 +120,3 @@ The fullscreen UI uses the available window width. Detailed emotion scores are a
 A clip can contain positive wording and negative vocal delivery yet still receive a low sarcasm score from the learned classifier. The interface now flags strong opposing polarities and shows **Conflicting cues — review context** when the classifier is below its 0.5 sarcasm threshold. This is a separate, unvalidated review heuristic: text valence must exceed 0.5 and voice valence be below -0.5 (or the reverse). Text valence is P(positive) - P(negative); voice valence is P(happy) - P(angry) - P(sad). It does not override or recalibrate classifier scores, and is available only in Text + speech mode. No accuracy improvement is claimed from adding this flag.
 
 The emotion encoder has only four categories. A sad-like match can overlap frustrated or subdued delivery; frustration is not classified separately. Reliable improvement on everyday recordings requires diverse labeled recordings and held-out evaluation, rather than a phrase-specific rule or threshold tuned to one recording. The classifier weights and research results are unchanged.
-
-The header’s sun/moon **Dark mode** switch switches themes without reloading or clearing the current recording and result. OLED dark mode uses a pure black page, neutral charcoal surfaces, and light text. Fresh launches default to light mode, regardless of system appearance or an old saved preference. The switch enables OLED dark mode for the current session. Theme behavior can be checked with `node --test tests/test_theme.cjs`.
-
-Frozen encoders and tokenizers are now reused in memory for the lifetime of the app, with downloaded checkpoints loaded locally before any network fallback. This avoids rebuilding large models on each clip. The first analysis still loads the models and initializes audio processing; later clips are faster. This uses several GB of RAM while open and releases it when the app exits. No audio/result cache is written by this optimization. Prior output is hidden during analysis so only the progress display is visible.
-
-A local timing check on a 5.17-second clip took 11.88 s for initial model loading plus inference and 0.54 s for the next inference in the same process. Through the running app API, two warm requests (different clips, automatic transcription) took 0.71 s and 0.55 s including client overhead. Extracted features and classifier scores matched the previous pipeline exactly for the checked clip. Timings depend on hardware, memory pressure and clip length; these are measured examples, not latency guarantees.
