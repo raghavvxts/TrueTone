@@ -15,7 +15,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKUIDelegate, WKNaviga
     var checking = false
     var finished = false
     var recoveredWebProcess = false
-    let address = URL(string: "http://127.0.0.1:7861/?__theme=light")!
+    let address = URL(string: "http://127.0.0.1:7861/")!
     let log = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Logs/TrueTone/server.log")
 
     func applicationDidFinishLaunching(_ notification: Notification) {

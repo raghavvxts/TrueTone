@@ -34,6 +34,7 @@ def analyze(audio, transcript, model, progress=gr.Progress()):
 ASSETS = Path(__file__).resolve().parent / 'assets'
 LOGO_DATA = base64.b64encode((ASSETS / 'logo-96.png').read_bytes()).decode('ascii')
 CSS = (Path(__file__).resolve().parent / 'ui/style.css').read_text()
+THEME_JS = (Path(__file__).resolve().parent / 'ui/theme.js').read_text()
 EMPTY_RESULT = '### No result yet\nRecord or upload a clip, then choose **Analyze recording**.'
 THEME = gr.themes.Base(primary_hue='emerald', neutral_hue='stone', font=['Arial', 'sans-serif']).set(
     body_background_fill='var(--tt-paper)', body_background_fill_dark='var(--tt-paper)',
@@ -47,13 +48,14 @@ def create_app():
         gr.HTML("""<header class="tt-masthead">
           <div class="tt-wordmark"><img class="tt-logo" src="data:image/png;base64,LOGO_DATA" alt="" aria-hidden="true">TrueTone</div>
           <nav class="tt-masthead-right" aria-label="Project"><span class="tt-project">PID-02</span>
+          <button id="theme-toggle" type="button" aria-label="Switch to dark mode">Dark mode</button>
           <a href="https://github.com/raghavvxts/TrueTone" target="_blank" rel="noopener noreferrer">View source</a></nav>
         </header>
         <section class="tt-hero" aria-labelledby="hero-title">
           <div><p class="tt-eyebrow">SPEECH &amp; SARCASM</p><h1 id="hero-title">A closer listen<br>to sarcasm.</h1></div>
           <div class="tt-intro"><p>Record a line and see how the model reads its words and delivery.</p>
           <p class="tt-format">1–30 seconds / English speech</p></div>
-        </section>""".replace('LOGO_DATA', LOGO_DATA))
+        </section>""".replace('LOGO_DATA', LOGO_DATA), js_on_load=THEME_JS)
         with gr.Row(elem_id='workspace'):
             with gr.Column(min_width=280, elem_id='input-pane'):
                 gr.HTML('<div class="tt-section-heading"><h2>Your recording</h2><span>Record or upload</span></div>')

@@ -2,7 +2,7 @@
 
 A research listening tool, using the project's forest, ivory and burnt-orange palette. The interface should feel calm and editorial, with the recording and its result given equal space.
 
-`style.css` is the source of truth for colors, typography, spacing and component treatments. Georgia introduces the subject and result; Arial keeps controls legible. Orange is reserved for small emphasis and focus. Components use modest corners, thin neutral borders, and no decorative shadows. Dark mode uses the same hierarchy with accessible light text. Small screens stack input before output; reduced-motion preferences disable transitions.
+`style.css` is the source of truth for colors, typography, spacing and component treatments. Georgia introduces the subject and result; Arial keeps controls legible. Orange is reserved for small emphasis and focus. Components use modest corners, thin neutral borders, and no decorative shadows. OLED dark mode uses a pure black (#000000) page, neutral charcoal (#101010) surfaces and light text, without green-tinted backgrounds. The header toggle switches in place; keep current input and results intact. Small screens stack input before output; reduced-motion preferences disable transitions.
 
 Use plain task language. Keep scores, transcripts and limitations accurate. Never add invented confidence, example waveforms or model explanations. Advanced settings belong behind a disclosure.
 

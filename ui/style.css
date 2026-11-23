@@ -12,12 +12,12 @@
   --tt-display: Georgia, 'Times New Roman', serif;
 }
 .dark {
-  --tt-paper: #151d19;
-  --tt-surface: #1c2821;
-  --tt-ink: #edf2e6;
-  --tt-muted: #bdc9bb;
-  --tt-line: #3a493e;
-  --tt-accent: #df9e7a;
+  --tt-paper: #000000;
+  --tt-surface: #101010;
+  --tt-ink: #f4f4f4;
+  --tt-muted: #b3b3b3;
+  --tt-line: #303030;
+  --tt-accent: #e2a082;
 }
 body, .gradio-container { background: var(--tt-paper) !important; }
 .gradio-container {
@@ -116,3 +116,14 @@ footer { display: none !important; }
 
 #emotion-details { background: transparent !important; border-color: var(--tt-line) !important; }
 #emotion-details > button { color: var(--tt-muted) !important; font-size: 13px !important; }
+
+#theme-toggle { border: 1px solid var(--tt-line); border-radius: var(--tt-radius); padding: 8px 12px; background: var(--tt-surface); color: var(--tt-ink); font: inherit; cursor: pointer; white-space: nowrap; }
+#theme-toggle:hover { border-color: var(--tt-ink); }
+.dark .gradio-container { --color-accent: #d4d4d4; --color-accent-soft: #262626; --loader-color: #d4d4d4; }
+.dark #recognized textarea { background: #101010 !important; }
+@media (max-width: 540px) {
+  .tt-masthead { gap: 12px; }
+  .tt-masthead-right { gap: 10px; font-size: 12px; }
+  .tt-masthead-right .tt-project { display: none; }
+  #theme-toggle { padding: 8px; }
+}
