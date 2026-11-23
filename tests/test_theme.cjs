@@ -14,7 +14,7 @@ function page(url, saved, storageBlocked = false) {
   let click;
   const button = {setAttribute(key, value) {attributes[key] = value;}, addEventListener(event, fn) {click = fn;}};
   const window = {
-    location: {href: url}, matchMedia: () => ({matches: false}),
+    location: {href: url}, matchMedia: () => ({matches: true}),
     localStorage: {
       getItem() {if (storageBlocked) throw Error('blocked'); return saved;},
       setItem(key, value) {if (storageBlocked) throw Error('blocked'); saved = value;}
@@ -38,14 +38,13 @@ test('toggle respects URL, switches both ways and keeps other URL state', () => 
   assert(!p.html.classes.has('dark'));
   assert(!p.body.classes.has('dark'));
   assert.equal(p.attributes['aria-checked'], 'false');
-  assert.equal(p.saved(), 'light');
   assert(p.window.location.href.includes('recording=keep#result'));
   p.click();
-  assert.equal(p.saved(), 'dark');
   assert.equal(p.meta.content, '#000000');
 });
-test('saved preference and blocked storage both work', () => {
-  assert(page('http://localhost/', 'dark').body.classes.has('dark'));
+test('fresh launches stay light despite dark system or old saved preference', () => {
+  assert(!page('http://localhost/', 'dark').body.classes.has('dark'));
+  assert(!page('http://localhost/?__theme=invalid', 'dark').body.classes.has('dark'));
   const p = page('http://localhost/', null, true);
   p.click();
   assert(p.body.classes.has('dark'));

@@ -1,11 +1,7 @@
 // Switch in place: recordings, transcript edits and model results stay intact.
 const themeButton = element.querySelector('#theme-toggle');
 const requestedTheme = new URL(window.location.href).searchParams.get('__theme');
-let savedTheme;
-try { savedTheme = window.localStorage.getItem('truetone-theme'); } catch (_) {}
-const validTheme = value => value === 'dark' || value === 'light';
-let theme = validTheme(requestedTheme) ? requestedTheme : validTheme(savedTheme) ? savedTheme :
-    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+let theme = requestedTheme === 'dark' ? 'dark' : 'light';
 
 function applyTheme(nextTheme) {
     theme = nextTheme;
@@ -21,7 +17,6 @@ function applyTheme(nextTheme) {
 applyTheme(theme);
 themeButton.addEventListener('click', () => {
     applyTheme(theme === 'dark' ? 'light' : 'dark');
-    try { window.localStorage.setItem('truetone-theme', theme); } catch (_) {}
     const url = new URL(window.location.href);
     url.searchParams.set('__theme', theme);
     window.history.replaceState(window.history.state, '', url);
