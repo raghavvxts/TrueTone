@@ -57,7 +57,7 @@ def create_app():
           <a href="https://github.com/raghavvxts/TrueTone" target="_blank" rel="noopener noreferrer">View source</a></nav>
         </header>
         <section class="tt-hero" aria-labelledby="hero-title">
-          <div><p class="tt-eyebrow">SPEECH &amp; SARCASM</p><h1 id="hero-title">A closer listen<br>to sarcasm.</h1></div>
+          <div><p class="tt-eyebrow">SPEECH &amp; SARCASM</p><h1 id="hero-title">A closer listen to sarcasm.</h1></div>
           <div class="tt-intro"><p>Record a line and see how the model reads its words and delivery.</p>
           <p class="tt-format">1–30 seconds / English speech</p></div>
         </section>""".replace('LOGO_DATA', LOGO_DATA), js_on_load=THEME_JS)
