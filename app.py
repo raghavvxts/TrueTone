@@ -1,6 +1,7 @@
 """TrueTone local microphone demo. Run with: python app.py"""
 from functools import lru_cache
 import base64
+import hashlib
 import os
 from pathlib import Path
 
@@ -33,6 +34,7 @@ def analyze(audio, transcript, model, progress=gr.Progress()):
 
 ASSETS = Path(__file__).resolve().parent / 'assets'
 LOGO_DATA = base64.b64encode((ASSETS / 'logo-96.png').read_bytes()).decode('ascii')
+ICON_VERSION = hashlib.sha256((ASSETS / 'favicon.ico').read_bytes()).hexdigest()[:12]
 CSS = (Path(__file__).resolve().parent / 'ui/style.css').read_text()
 THEME_JS = (Path(__file__).resolve().parent / 'ui/theme.js').read_text()
 EMPTY_RESULT = '### No result yet\nRecord or upload a clip, then choose **Analyze recording**.'
@@ -97,4 +99,4 @@ def create_app():
 if __name__ == '__main__':
     create_app().queue(max_size=4).launch(server_name='127.0.0.1', server_port=int(os.environ.get('TRUETONE_PORT', '7860')),
         share=False, max_file_size='15mb', theme=THEME, css=CSS, favicon_path=ASSETS / 'favicon.ico',
-        allowed_paths=[str(ASSETS)], head=f'<link rel="apple-touch-icon" href="/gradio_api/file={ASSETS / "apple-touch-icon.png"}"><meta name="theme-color" content="#203c34">')
+        allowed_paths=[str(ASSETS)], head=f'<link rel="icon" type="image/x-icon" href="/favicon.ico?v={ICON_VERSION}"><link rel="apple-touch-icon" href="/gradio_api/file={ASSETS / "apple-touch-icon.png"}?v={ICON_VERSION}"><meta name="theme-color" content="#f5f2e9">')
