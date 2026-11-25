@@ -51,3 +51,5 @@ Before committing: run tests, inspect `git diff --check` and `git status`, confi
 ## Source bundle
 
 A Git archive is a clean source/evaluation bundle: it excludes ignored recordings, caches, the installed application and the virtual environment. Teammates install dependencies after extracting it. It includes the PPTX and PDF. The Desktop ZIP supplied with this cleanup is a snapshot of the committed repository, not a complete offline installation.
+
+For direct generated-file upload checks on macOS: start a local app, then run `.venv/bin/python scripts/check_uploads.py --url http://127.0.0.1:7860`. The checker synthesizes 20 WAV/MP3/M4A files and uploads them with blank transcripts through both emotion modes. Numeric results go to results/app-audit/upload_verification.json; audio stays ignored. This tests ASR and processing, not emotion/sarcasm correctness.

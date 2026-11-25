@@ -56,3 +56,11 @@ Clear was pressed while the actual microphone clip was being transcribed. It res
 One UI defect was corrected: expected recording-validation errors now return a Recording needs attention message with recovery instructions in the result pane instead of only a generic error badge. Prior transcript and prediction outputs are cleared. The actual failed microphone capture was replayed through the fixed app API and returned those instructions with empty confidence scores. Runtime/artifact failures remain exceptions. Invalid uploads rejected before the callback still use Gradio validation.
 
 Thirty-three Python tests and two JavaScript theme tests pass. The native app was quit and its owned server stopped after testing; microphone capture ended. No microphone-trained/calibrated candidate exists because there are still no independently labelled human recordings in the study manifest. This check does not claim a new recognition-accuracy improvement.
+
+## Generated files uploaded with automatic transcription
+
+`scripts/check_uploads.py` synthesizes files directly with macOS speech, then uploads each file through the actual Gradio `/analyze` API with the optional transcript blank. No microphone is used. Twenty files cover two voices, eight sentences each, plus MP3/M4A versions of each voice's first WAV. Both emotion modes were tested: all 40 requests returned complete finite predictions and normalized emotion scores, without a recording rejection.
+
+Against the known synthesized words, automatic transcription made 9 word edits across 118 reference words (7.63% WER). Each uploaded file is counted once, not once per emotion mode; compressed variants repeat two sentences. This is a small synthetic diagnostic, not independent human-speech or sarcasm/emotion accuracy. It neither fine-tunes nor calibrates any model. Full outputs are in upload_verification.json.
+
+Audio stays under ignored truetone/upload-check/. An additional user-facing copy, including spoken-word references, is on this Mac's Desktop in TrueTone-Generated-Uploads. No captured microphone recording, private transcript, or generated audio file is committed. The repeatable checker requires macOS say and a running app, by default http://127.0.0.1:7862; pass --url for another local app port. Source playback-only checks and corrected-transcript checks in earlier sections remain separate.
