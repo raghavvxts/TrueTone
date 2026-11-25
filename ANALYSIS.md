@@ -14,7 +14,7 @@ The original [690-target notebook](research/baseline/TrueTone_MUStARD.ipynb), [m
 - Shared-target folds retain show/speaker overlap beyond exact-duplicate grouping.
 - Scaling is fitted on outer training data and reused during inner C selection; inner preprocessing is not fully nested.
 - The development comparison is not an untouched external test, and per-show classes are uneven.
-- Emotion estimates have only four classes and are uncalibrated. The cue-contrast flag is an unvalidated heuristic.
+- Default emotion estimates have four classes; an optional experimental MUStARD++ head has nine. Neither is validated on live microphone speakers. Scores are uncalibrated, and the cue-contrast flag is an unvalidated heuristic.
 - Speech-reference speaking-rate features depend on transcript word counts.
 - Final app weights are refitted on all targets; training predictions are not an accuracy estimate.
 
