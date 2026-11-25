@@ -21,7 +21,9 @@ def predictor():
 def analyze(audio, transcript, model, emotion_mode='Existing four-class', progress=gr.Progress()):
     try:
         score, words, duration, voice, emotion_scores, contrast = predictor().predict(audio, transcript, model, progress, emotion_mode=emotion_mode)
-    except (ValueError, RuntimeError, OSError) as error:
+    except ValueError as error:
+        return None, '', f'### Recording needs attention\n\n{error}', '', None
+    except (RuntimeError, OSError) as error:
         raise gr.Error(str(error)) from error
     verdict = 'Sarcastic' if score >= .5 else 'Not sarcastic'
     heading = 'Conflicting cues — review context' if contrast and score < .5 else f'Model predicts: {verdict.lower()}'
