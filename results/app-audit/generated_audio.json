@@ -1,0 +1,1061 @@
+{
+  "note": "Synthesized by macOS say. Reference transcript supplied. No human emotion or sarcasm ground truth; not accuracy evidence. Two voices are not independent human speakers. Audio stays local.",
+  "checks": [
+    {
+      "voice": "Albert",
+      "sentence": 0,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.15524313559199487,
+      "emotion": {
+        "Neutral": 0.05109348148107529,
+        "Happy": 0.9035919308662415,
+        "Angry": 1.0227066923107486e-05,
+        "Sad": 0.0453043095767498
+      },
+      "seconds": 2.202495542005636
+    },
+    {
+      "voice": "Albert",
+      "sentence": 0,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.15524313559199487,
+      "emotion": {
+        "Anger": 0.021633269265294075,
+        "Disgust": 0.044988106936216354,
+        "Excitement": 0.49847733974456787,
+        "Fear": 0.05991482362151146,
+        "Frustration": 0.0020127841271460056,
+        "Happiness": 2.5653833290562034e-05,
+        "Neutral": 0.2752620279788971,
+        "Sadness": 0.09538057446479797,
+        "Surprise": 0.0023054147604852915
+      },
+      "seconds": 0.2159615829878021
+    },
+    {
+      "voice": "Albert",
+      "sentence": 0,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.19688977169142916,
+      "emotion": {
+        "Neutral": 0.005916007328778505,
+        "Happy": 0.9633080363273621,
+        "Angry": 3.57301473741245e-06,
+        "Sad": 0.03077235259115696
+      },
+      "seconds": 0.2029445000225678
+    },
+    {
+      "voice": "Albert",
+      "sentence": 0,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.19688977169142916,
+      "emotion": {
+        "Anger": 0.013344353064894676,
+        "Disgust": 0.07928616553544998,
+        "Excitement": 0.017541995272040367,
+        "Fear": 0.014143888838589191,
+        "Frustration": 0.0015104319900274277,
+        "Happiness": 0.001775259617716074,
+        "Neutral": 0.5840347409248352,
+        "Sadness": 0.2879883944988251,
+        "Surprise": 0.00037480538594536483
+      },
+      "seconds": 0.20498579100240022
+    },
+    {
+      "voice": "Albert",
+      "sentence": 1,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.2686613417850275,
+      "emotion": {
+        "Neutral": 0.03358566388487816,
+        "Happy": 0.2358396351337433,
+        "Angry": 6.037723778717918e-06,
+        "Sad": 0.7305685877799988
+      },
+      "seconds": 0.24428845799411647
+    },
+    {
+      "voice": "Albert",
+      "sentence": 1,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.2686613417850275,
+      "emotion": {
+        "Anger": 0.028239011764526367,
+        "Disgust": 0.01162106916308403,
+        "Excitement": 0.12295076996088028,
+        "Fear": 0.08960611373186111,
+        "Frustration": 0.001399360247887671,
+        "Happiness": 6.899107347635436e-07,
+        "Neutral": 0.10646599531173706,
+        "Sadness": 0.6376927495002747,
+        "Surprise": 0.0020242026075720787
+      },
+      "seconds": 0.23054145800415426
+    },
+    {
+      "voice": "Albert",
+      "sentence": 1,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.33336200194159543,
+      "emotion": {
+        "Neutral": 0.009147129021584988,
+        "Happy": 0.9818047881126404,
+        "Angry": 0.00014006976562086493,
+        "Sad": 0.00890808179974556
+      },
+      "seconds": 0.23027412500232458
+    },
+    {
+      "voice": "Albert",
+      "sentence": 1,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.33336200194159543,
+      "emotion": {
+        "Anger": 0.0017977207899093628,
+        "Disgust": 0.01731419377028942,
+        "Excitement": 0.029345868155360222,
+        "Fear": 0.006186712067574263,
+        "Frustration": 0.00011691277904901654,
+        "Happiness": 0.0002956639800686389,
+        "Neutral": 0.023782460018992424,
+        "Sadness": 0.9209185838699341,
+        "Surprise": 0.00024200828920584172
+      },
+      "seconds": 0.22960733299260028
+    },
+    {
+      "voice": "Albert",
+      "sentence": 2,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.28108284178542076,
+      "emotion": {
+        "Neutral": 0.015684666112065315,
+        "Happy": 0.12969601154327393,
+        "Angry": 5.375462023948785e-06,
+        "Sad": 0.8546139597892761
+      },
+      "seconds": 0.22027750001871027
+    },
+    {
+      "voice": "Albert",
+      "sentence": 2,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.28108284178542076,
+      "emotion": {
+        "Anger": 0.002209796803072095,
+        "Disgust": 0.016317447647452354,
+        "Excitement": 0.06317190825939178,
+        "Fear": 0.003986646421253681,
+        "Frustration": 0.001438682316802442,
+        "Happiness": 3.723792178789154e-05,
+        "Neutral": 1.7508125893073156e-05,
+        "Sadness": 0.9125255346298218,
+        "Surprise": 0.0002951939241029322
+      },
+      "seconds": 0.2101272089930717
+    },
+    {
+      "voice": "Albert",
+      "sentence": 2,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.2741312861385436,
+      "emotion": {
+        "Neutral": 0.002353261224925518,
+        "Happy": 0.9960663914680481,
+        "Angry": 0.00041359668830409646,
+        "Sad": 0.001166773377917707
+      },
+      "seconds": 0.21216999998432584
+    },
+    {
+      "voice": "Albert",
+      "sentence": 2,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.2741312861385436,
+      "emotion": {
+        "Anger": 0.0004437842289917171,
+        "Disgust": 0.03154628723859787,
+        "Excitement": 0.022637421265244484,
+        "Fear": 0.004566030111163855,
+        "Frustration": 0.0005916274385526776,
+        "Happiness": 0.012462289072573185,
+        "Neutral": 0.0003867768100462854,
+        "Sadness": 0.9273034930229187,
+        "Surprise": 6.2230734329205e-05
+      },
+      "seconds": 0.21532516699517146
+    },
+    {
+      "voice": "Albert",
+      "sentence": 3,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.22245874200316387,
+      "emotion": {
+        "Neutral": 0.2961057424545288,
+        "Happy": 0.11694265902042389,
+        "Angry": 2.708962892938871e-05,
+        "Sad": 0.5869244933128357
+      },
+      "seconds": 0.21224449999863282
+    },
+    {
+      "voice": "Albert",
+      "sentence": 3,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.22245874200316387,
+      "emotion": {
+        "Anger": 0.005997222848236561,
+        "Disgust": 0.0558120533823967,
+        "Excitement": 0.9132580757141113,
+        "Fear": 0.006216761190444231,
+        "Frustration": 0.0028692055493593216,
+        "Happiness": 1.2109940144000575e-05,
+        "Neutral": 0.000808906159363687,
+        "Sadness": 0.014997382648289204,
+        "Surprise": 2.825678893714212e-05
+      },
+      "seconds": 0.205558249988826
+    },
+    {
+      "voice": "Albert",
+      "sentence": 3,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.21346575217719785,
+      "emotion": {
+        "Neutral": 0.0017887043068185449,
+        "Happy": 0.10177994519472122,
+        "Angry": 0.00015709083527326584,
+        "Sad": 0.8962742686271667
+      },
+      "seconds": 0.20182308400399052
+    },
+    {
+      "voice": "Albert",
+      "sentence": 3,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.21346575217719785,
+      "emotion": {
+        "Anger": 0.004955735057592392,
+        "Disgust": 0.03738301247358322,
+        "Excitement": 0.8777359127998352,
+        "Fear": 0.0024571511894464493,
+        "Frustration": 0.010114593431353569,
+        "Happiness": 5.4256943258224055e-05,
+        "Neutral": 0.034292493015527725,
+        "Sadness": 0.03295210748910904,
+        "Surprise": 5.467701339512132e-05
+      },
+      "seconds": 0.2008544590207748
+    },
+    {
+      "voice": "Albert",
+      "sentence": 4,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.08393739395293132,
+      "emotion": {
+        "Neutral": 0.010818926617503166,
+        "Happy": 0.9587351083755493,
+        "Angry": 3.5174475669919048e-06,
+        "Sad": 0.030442383140325546
+      },
+      "seconds": 0.21635591698577628
+    },
+    {
+      "voice": "Albert",
+      "sentence": 4,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.08393739395293132,
+      "emotion": {
+        "Anger": 0.035133957862854004,
+        "Disgust": 0.17578236758708954,
+        "Excitement": 0.5238988399505615,
+        "Fear": 0.04750632867217064,
+        "Frustration": 0.08350548148155212,
+        "Happiness": 0.0005116721731610596,
+        "Neutral": 0.12721042335033417,
+        "Sadness": 0.006406643893569708,
+        "Surprise": 4.429790351423435e-05
+      },
+      "seconds": 0.2048754160059616
+    },
+    {
+      "voice": "Albert",
+      "sentence": 4,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.10970002344346234,
+      "emotion": {
+        "Neutral": 0.02707325853407383,
+        "Happy": 0.8755131959915161,
+        "Angry": 2.828929245879408e-05,
+        "Sad": 0.09738519787788391
+      },
+      "seconds": 0.21332437498494983
+    },
+    {
+      "voice": "Albert",
+      "sentence": 4,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.10970002344346234,
+      "emotion": {
+        "Anger": 0.007948395796120167,
+        "Disgust": 0.11904478073120117,
+        "Excitement": 0.04469475522637367,
+        "Fear": 0.027288272976875305,
+        "Frustration": 0.005799137521535158,
+        "Happiness": 0.01532819028943777,
+        "Neutral": 0.7261785864830017,
+        "Sadness": 0.0537087582051754,
+        "Surprise": 9.095034329220653e-06
+      },
+      "seconds": 0.22375208299490623
+    },
+    {
+      "voice": "Albert",
+      "sentence": 5,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.08278921040956104,
+      "emotion": {
+        "Neutral": 0.22858744859695435,
+        "Happy": 0.7695410847663879,
+        "Angry": 5.06596234117751e-06,
+        "Sad": 0.0018663688097149134
+      },
+      "seconds": 0.21834458399098366
+    },
+    {
+      "voice": "Albert",
+      "sentence": 5,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.08278921040956104,
+      "emotion": {
+        "Anger": 0.02339504100382328,
+        "Disgust": 0.004003317095339298,
+        "Excitement": 0.0030009890906512737,
+        "Fear": 0.0012212698347866535,
+        "Frustration": 9.472040983382612e-05,
+        "Happiness": 0.00013795086124446243,
+        "Neutral": 0.0007803026237525046,
+        "Sadness": 0.9673556089401245,
+        "Surprise": 1.0771985216706526e-05
+      },
+      "seconds": 0.21544558301684447
+    },
+    {
+      "voice": "Albert",
+      "sentence": 5,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.15591272035595732,
+      "emotion": {
+        "Neutral": 0.05719728395342827,
+        "Happy": 0.941584587097168,
+        "Angry": 5.325904112396529e-06,
+        "Sad": 0.0012128368252888322
+      },
+      "seconds": 0.20357504099956714
+    },
+    {
+      "voice": "Albert",
+      "sentence": 5,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.15591272035595732,
+      "emotion": {
+        "Anger": 0.05813973769545555,
+        "Disgust": 0.16458167135715485,
+        "Excitement": 0.14937061071395874,
+        "Fear": 0.01698245108127594,
+        "Frustration": 0.0010397344594821334,
+        "Happiness": 0.032273679971694946,
+        "Neutral": 0.48762455582618713,
+        "Sadness": 0.08986741304397583,
+        "Surprise": 0.00012010952195851132
+      },
+      "seconds": 0.21498179199988954
+    },
+    {
+      "voice": "Albert",
+      "sentence": 6,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.134972968074295,
+      "emotion": {
+        "Neutral": 0.24164773523807526,
+        "Happy": 0.6770340800285339,
+        "Angry": 9.035077709995676e-06,
+        "Sad": 0.08130911737680435
+      },
+      "seconds": 0.2308820000034757
+    },
+    {
+      "voice": "Albert",
+      "sentence": 6,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.134972968074295,
+      "emotion": {
+        "Anger": 0.0015064425533637404,
+        "Disgust": 0.004523124545812607,
+        "Excitement": 0.00017995957750827074,
+        "Fear": 0.0023529278114438057,
+        "Frustration": 0.00018539378652349114,
+        "Happiness": 1.1781934517784975e-05,
+        "Neutral": 0.002924367319792509,
+        "Sadness": 0.9882842302322388,
+        "Surprise": 3.1694456993136555e-05
+      },
+      "seconds": 0.21988808299647644
+    },
+    {
+      "voice": "Albert",
+      "sentence": 6,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.08991270645521358,
+      "emotion": {
+        "Neutral": 0.06187667325139046,
+        "Happy": 0.894347071647644,
+        "Angry": 6.17133773630485e-05,
+        "Sad": 0.04371452331542969
+      },
+      "seconds": 0.21313633301178925
+    },
+    {
+      "voice": "Albert",
+      "sentence": 6,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.08991270645521358,
+      "emotion": {
+        "Anger": 0.01209450513124466,
+        "Disgust": 0.29296115040779114,
+        "Excitement": 0.0051789479330182076,
+        "Fear": 0.05520520359277725,
+        "Frustration": 0.0005495816585607827,
+        "Happiness": 0.007738054729998112,
+        "Neutral": 0.17180036008358002,
+        "Sadness": 0.4504762887954712,
+        "Surprise": 0.003995884675532579
+      },
+      "seconds": 0.2155122499971185
+    },
+    {
+      "voice": "Albert",
+      "sentence": 7,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.22057143444107882,
+      "emotion": {
+        "Neutral": 0.008204548619687557,
+        "Happy": 0.8130164742469788,
+        "Angry": 8.693786185176577e-06,
+        "Sad": 0.17877033352851868
+      },
+      "seconds": 0.22222862500348128
+    },
+    {
+      "voice": "Albert",
+      "sentence": 7,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.22057143444107882,
+      "emotion": {
+        "Anger": 0.058328114449977875,
+        "Disgust": 0.0465320385992527,
+        "Excitement": 0.8166752457618713,
+        "Fear": 0.03005518577992916,
+        "Frustration": 0.001334772678092122,
+        "Happiness": 1.7005257177515887e-05,
+        "Neutral": 0.011471529491245747,
+        "Sadness": 0.03555982559919357,
+        "Surprise": 2.6320933102397248e-05
+      },
+      "seconds": 0.21060020898585208
+    },
+    {
+      "voice": "Albert",
+      "sentence": 7,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.2012769019483449,
+      "emotion": {
+        "Neutral": 6.537327135447413e-05,
+        "Happy": 0.9644109010696411,
+        "Angry": 0.00018650483980309218,
+        "Sad": 0.035337239503860474
+      },
+      "seconds": 0.20912295900052413
+    },
+    {
+      "voice": "Albert",
+      "sentence": 7,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.2012769019483449,
+      "emotion": {
+        "Anger": 0.03339352831244469,
+        "Disgust": 0.06090283393859863,
+        "Excitement": 0.3763899505138397,
+        "Fear": 0.03894098103046417,
+        "Frustration": 0.004440051503479481,
+        "Happiness": 0.011068356223404408,
+        "Neutral": 0.00829219724982977,
+        "Sadness": 0.4663320779800415,
+        "Surprise": 0.0002400007942924276
+      },
+      "seconds": 0.2056543749931734
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 0,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.22077438602054553,
+      "emotion": {
+        "Neutral": 0.8250874280929565,
+        "Happy": 0.08437532931566238,
+        "Angry": 0.09053664654493332,
+        "Sad": 5.976083343739447e-07
+      },
+      "seconds": 0.2350902500038501
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 0,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.22077438602054553,
+      "emotion": {
+        "Anger": 2.608424620120786e-05,
+        "Disgust": 0.00012041602894896641,
+        "Excitement": 1.4245935062717763e-06,
+        "Fear": 1.036356024997076e-05,
+        "Frustration": 3.4220614907098934e-05,
+        "Happiness": 1.98733923753025e-05,
+        "Neutral": 0.9997770190238953,
+        "Sadness": 4.808257472177502e-07,
+        "Surprise": 1.0132723218703177e-05
+      },
+      "seconds": 0.22499654200510122
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 0,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.47395371059649294,
+      "emotion": {
+        "Neutral": 0.061426885426044464,
+        "Happy": 0.7632859945297241,
+        "Angry": 0.17527826130390167,
+        "Sad": 8.853372492012568e-06
+      },
+      "seconds": 0.22719662499730475
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 0,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.47395371059649294,
+      "emotion": {
+        "Anger": 1.3393707376962993e-05,
+        "Disgust": 6.895959813846275e-05,
+        "Excitement": 5.787870122730965e-06,
+        "Fear": 1.650516060180962e-05,
+        "Frustration": 2.4504053726559505e-05,
+        "Happiness": 0.0013213418424129486,
+        "Neutral": 0.9985186457633972,
+        "Sadness": 2.4842980565153994e-05,
+        "Surprise": 5.973897714284249e-06
+      },
+      "seconds": 0.22547483400558122
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 1,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.6316158247113041,
+      "emotion": {
+        "Neutral": 0.7409531474113464,
+        "Happy": 0.20948176085948944,
+        "Angry": 0.04919612035155296,
+        "Sad": 0.0003688822907861322
+      },
+      "seconds": 0.240765458001988
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 1,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.6316158247113041,
+      "emotion": {
+        "Anger": 1.198904647026211e-05,
+        "Disgust": 0.00017465525888837874,
+        "Excitement": 0.0003120659675914794,
+        "Fear": 7.546164852101356e-05,
+        "Frustration": 5.3547764764516614e-06,
+        "Happiness": 6.651856529060751e-05,
+        "Neutral": 0.9992823004722595,
+        "Sadness": 6.647883310506586e-06,
+        "Surprise": 6.508855585707352e-05
+      },
+      "seconds": 0.2345560829853639
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 1,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.6816908859616124,
+      "emotion": {
+        "Neutral": 0.04357215762138367,
+        "Happy": 0.7719338536262512,
+        "Angry": 0.18354038894176483,
+        "Sad": 0.0009535996941849589
+      },
+      "seconds": 0.2367891250178218
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 1,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.6816908859616124,
+      "emotion": {
+        "Anger": 4.409978373587364e-06,
+        "Disgust": 0.0003048827056773007,
+        "Excitement": 0.0019351100781932473,
+        "Fear": 0.00023764290381222963,
+        "Frustration": 1.2499664080678485e-05,
+        "Happiness": 0.0009809924522414804,
+        "Neutral": 0.9958254098892212,
+        "Sadness": 0.0003786442393902689,
+        "Surprise": 0.0003204383247066289
+      },
+      "seconds": 0.23511783298454247
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 2,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.15307767338343173,
+      "emotion": {
+        "Neutral": 0.8718360066413879,
+        "Happy": 0.03945758566260338,
+        "Angry": 0.08867781609296799,
+        "Sad": 2.8549766284413636e-05
+      },
+      "seconds": 0.233428208011901
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 2,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.15307767338343173,
+      "emotion": {
+        "Anger": 0.0009316725772805512,
+        "Disgust": 0.06701808422803879,
+        "Excitement": 0.024740545079112053,
+        "Fear": 0.003454354824498296,
+        "Frustration": 0.0035482447128742933,
+        "Happiness": 0.002876762766391039,
+        "Neutral": 0.8665649890899658,
+        "Sadness": 0.030680853873491287,
+        "Surprise": 0.00018451893993187696
+      },
+      "seconds": 0.22637937500257976
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 2,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.313696211560818,
+      "emotion": {
+        "Neutral": 0.04858452081680298,
+        "Happy": 0.3125038146972656,
+        "Angry": 0.6375115513801575,
+        "Sad": 0.0014000650262460113
+      },
+      "seconds": 0.22575245797634125
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 2,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.313696211560818,
+      "emotion": {
+        "Anger": 5.3881874919170514e-05,
+        "Disgust": 0.01723272167146206,
+        "Excitement": 0.02023429609835148,
+        "Fear": 0.0004782331525348127,
+        "Frustration": 0.00040393025847151875,
+        "Happiness": 0.0035219634883105755,
+        "Neutral": 0.8129010200500488,
+        "Sadness": 0.14515948295593262,
+        "Surprise": 1.4435324374062475e-05
+      },
+      "seconds": 0.22547087501152419
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 3,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.1978778933492229,
+      "emotion": {
+        "Neutral": 0.5346589684486389,
+        "Happy": 0.006942233070731163,
+        "Angry": 0.4580473005771637,
+        "Sad": 0.00035147034213878214
+      },
+      "seconds": 0.21388887500506826
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 3,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.1978778933492229,
+      "emotion": {
+        "Anger": 1.088336830434855e-05,
+        "Disgust": 3.882389501086436e-05,
+        "Excitement": 4.247848846716806e-05,
+        "Fear": 2.853082833098597e-06,
+        "Frustration": 2.6277202778146602e-05,
+        "Happiness": 4.495527173276059e-05,
+        "Neutral": 0.9998334646224976,
+        "Sadness": 1.3788721275886928e-07,
+        "Surprise": 1.5272914311026398e-07
+      },
+      "seconds": 0.20469600000069477
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 3,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.3417961239757105,
+      "emotion": {
+        "Neutral": 0.06394640356302261,
+        "Happy": 0.009909276850521564,
+        "Angry": 0.9246487021446228,
+        "Sad": 0.0014956197701394558
+      },
+      "seconds": 0.205429916997673
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 3,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.3417961239757105,
+      "emotion": {
+        "Anger": 8.449339657090604e-05,
+        "Disgust": 0.00034562349901534617,
+        "Excitement": 0.0002807275450322777,
+        "Fear": 5.363479067455046e-05,
+        "Frustration": 0.0001719175197649747,
+        "Happiness": 0.01424358319491148,
+        "Neutral": 0.9847297072410583,
+        "Sadness": 6.883868627483025e-05,
+        "Surprise": 2.1641644707415253e-05
+      },
+      "seconds": 0.20676679199095815
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 4,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.17066507879125575,
+      "emotion": {
+        "Neutral": 0.7576959133148193,
+        "Happy": 0.005265077110379934,
+        "Angry": 0.23699574172496796,
+        "Sad": 4.3266180000500754e-05
+      },
+      "seconds": 0.23753245797706768
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 4,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.17066507879125575,
+      "emotion": {
+        "Anger": 6.941720494069159e-05,
+        "Disgust": 0.0028736558742821217,
+        "Excitement": 1.846968189056497e-05,
+        "Fear": 0.00012614672596100718,
+        "Frustration": 8.99101942195557e-05,
+        "Happiness": 0.0001478834165027365,
+        "Neutral": 0.9964260458946228,
+        "Sadness": 0.0002325062087038532,
+        "Surprise": 1.607243757462129e-05
+      },
+      "seconds": 0.2286510829871986
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 4,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.22833944604754094,
+      "emotion": {
+        "Neutral": 0.12514278292655945,
+        "Happy": 0.028926553204655647,
+        "Angry": 0.8457607626914978,
+        "Sad": 0.00016996590420603752
+      },
+      "seconds": 0.22709679199033417
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 4,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.22833944604754094,
+      "emotion": {
+        "Anger": 9.637185030442197e-06,
+        "Disgust": 0.0007717674598097801,
+        "Excitement": 4.3656622437993065e-05,
+        "Fear": 2.8308193577686325e-05,
+        "Frustration": 1.7247890355065465e-05,
+        "Happiness": 0.0004316832055337727,
+        "Neutral": 0.9983709454536438,
+        "Sadness": 0.00032449516584165394,
+        "Surprise": 2.2673166313325055e-06
+      },
+      "seconds": 0.2257659160241019
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 5,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.17872062727172228,
+      "emotion": {
+        "Neutral": 0.5759415030479431,
+        "Happy": 0.02011808753013611,
+        "Angry": 0.40392759442329407,
+        "Sad": 1.2690000403381418e-05
+      },
+      "seconds": 0.22968666700762697
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 5,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.17872062727172228,
+      "emotion": {
+        "Anger": 0.003593499306589365,
+        "Disgust": 0.04372208192944527,
+        "Excitement": 0.001423663110472262,
+        "Fear": 0.0018015727400779724,
+        "Frustration": 0.0033102782908827066,
+        "Happiness": 0.00041282500023953617,
+        "Neutral": 0.9445861577987671,
+        "Sadness": 0.0003368703182786703,
+        "Surprise": 0.0008129584603011608
+      },
+      "seconds": 0.22089120899909176
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 5,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.4059483448183343,
+      "emotion": {
+        "Neutral": 0.07854072749614716,
+        "Happy": 0.06500767171382904,
+        "Angry": 0.8561767339706421,
+        "Sad": 0.0002748579136095941
+      },
+      "seconds": 0.2209231250162702
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 5,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.4059483448183343,
+      "emotion": {
+        "Anger": 0.0008592844824306667,
+        "Disgust": 0.01156482845544815,
+        "Excitement": 0.004461092874407768,
+        "Fear": 0.0018322286196053028,
+        "Frustration": 0.000944450730457902,
+        "Happiness": 0.14364099502563477,
+        "Neutral": 0.8322489261627197,
+        "Sadness": 0.004348271992057562,
+        "Surprise": 0.00010004840441979468
+      },
+      "seconds": 0.21656225001788698
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 6,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.21896067849771966,
+      "emotion": {
+        "Neutral": 0.7429062128067017,
+        "Happy": 0.05289917066693306,
+        "Angry": 0.2041912078857422,
+        "Sad": 3.351998657308286e-06
+      },
+      "seconds": 0.23380229200120084
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 6,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.21896067849771966,
+      "emotion": {
+        "Anger": 0.0009278028155677021,
+        "Disgust": 0.03255591168999672,
+        "Excitement": 0.00028502015629783273,
+        "Fear": 0.005777791142463684,
+        "Frustration": 0.0006073643453419209,
+        "Happiness": 0.01853565312922001,
+        "Neutral": 0.940752387046814,
+        "Sadness": 0.00019654813513625413,
+        "Surprise": 0.0003614345914684236
+      },
+      "seconds": 0.22317512502195314
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 6,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.32747942616393294,
+      "emotion": {
+        "Neutral": 0.06433708220720291,
+        "Happy": 0.3108835220336914,
+        "Angry": 0.6245942711830139,
+        "Sad": 0.0001850463158916682
+      },
+      "seconds": 0.22339845899841748
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 6,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.32747942616393294,
+      "emotion": {
+        "Anger": 0.00025546670076437294,
+        "Disgust": 0.010159933008253574,
+        "Excitement": 0.0007580541423521936,
+        "Fear": 0.002379080280661583,
+        "Frustration": 0.00010191422188654542,
+        "Happiness": 0.10482259094715118,
+        "Neutral": 0.8800097107887268,
+        "Sadness": 0.0012941164895892143,
+        "Surprise": 0.00021916946570854634
+      },
+      "seconds": 0.2230008330079727
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 7,
+      "condition": "original",
+      "mode": "Existing four-class",
+      "score": 0.26674130985946287,
+      "emotion": {
+        "Neutral": 0.8527342677116394,
+        "Happy": 0.12102746963500977,
+        "Angry": 0.02612910233438015,
+        "Sad": 0.00010909850243479013
+      },
+      "seconds": 0.28925491697737016
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 7,
+      "condition": "original",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.26674130985946287,
+      "emotion": {
+        "Anger": 9.070951637113467e-05,
+        "Disgust": 0.004672491457313299,
+        "Excitement": 0.0021276497282087803,
+        "Fear": 0.0002126570325344801,
+        "Frustration": 0.0011172688100486994,
+        "Happiness": 0.002858507912606001,
+        "Neutral": 0.9886472821235657,
+        "Sadness": 8.468663145322353e-05,
+        "Surprise": 0.00018870847998186946
+      },
+      "seconds": 0.2293161669804249
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 7,
+      "condition": "noise_20db",
+      "mode": "Existing four-class",
+      "score": 0.429392653725717,
+      "emotion": {
+        "Neutral": 0.06308984756469727,
+        "Happy": 0.7221544981002808,
+        "Angry": 0.21352949738502502,
+        "Sad": 0.0012261250521987677
+      },
+      "seconds": 0.235320582985878
+    },
+    {
+      "voice": "Samantha",
+      "sentence": 7,
+      "condition": "noise_20db",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.429392653725717,
+      "emotion": {
+        "Anger": 1.295890524488641e-05,
+        "Disgust": 0.002014368074014783,
+        "Excitement": 0.008257943205535412,
+        "Fear": 6.334610225167125e-05,
+        "Frustration": 0.0010015576845034957,
+        "Happiness": 0.24676117300987244,
+        "Neutral": 0.7409358024597168,
+        "Sadness": 0.0006468034698627889,
+        "Surprise": 0.0003060164744965732
+      },
+      "seconds": 0.23282583398395218
+    }
+  ]
+}

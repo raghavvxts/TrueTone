@@ -1,0 +1,101 @@
+{
+  "note": "Training-set demos with reference transcripts; stability check only, not accuracy. Noise is synthetic, not microphone ground truth.",
+  "checks": [
+    {
+      "id": "1_10004",
+      "condition": "original",
+      "reference_label": 0,
+      "score": 0.5907222068102319,
+      "predicted": 1,
+      "seconds": 5.11073379201116
+    },
+    {
+      "id": "1_10004",
+      "condition": "quiet",
+      "reference_label": 0,
+      "score": 0.3895437503905228,
+      "predicted": 0,
+      "seconds": 0.5558099579939153
+    },
+    {
+      "id": "1_10004",
+      "condition": "noise_20db",
+      "reference_label": 0,
+      "score": 0.7774394743381767,
+      "predicted": 1,
+      "seconds": 0.5291531250113621
+    },
+    {
+      "id": "1_10009",
+      "condition": "original",
+      "reference_label": 0,
+      "score": 0.33663070702743364,
+      "predicted": 0,
+      "seconds": 0.4001383330032695
+    },
+    {
+      "id": "1_10009",
+      "condition": "quiet",
+      "reference_label": 0,
+      "score": 0.18061382834009784,
+      "predicted": 0,
+      "seconds": 0.395343457988929
+    },
+    {
+      "id": "1_10009",
+      "condition": "noise_20db",
+      "reference_label": 0,
+      "score": 0.32370839207009144,
+      "predicted": 0,
+      "seconds": 0.3856892909971066
+    },
+    {
+      "id": "1_1003",
+      "condition": "original",
+      "reference_label": 1,
+      "score": 0.8368235616911068,
+      "predicted": 1,
+      "seconds": 0.600155708991224
+    },
+    {
+      "id": "1_1003",
+      "condition": "quiet",
+      "reference_label": 1,
+      "score": 0.6879885411324618,
+      "predicted": 1,
+      "seconds": 0.5906657089944929
+    },
+    {
+      "id": "1_1003",
+      "condition": "noise_20db",
+      "reference_label": 1,
+      "score": 0.8706101978415913,
+      "predicted": 1,
+      "seconds": 0.578443457983667
+    },
+    {
+      "id": "1_10462",
+      "condition": "original",
+      "reference_label": 1,
+      "score": 0.9302305780305511,
+      "predicted": 1,
+      "seconds": 0.695413749985164
+    },
+    {
+      "id": "1_10462",
+      "condition": "quiet",
+      "reference_label": 1,
+      "score": 0.8496569708080124,
+      "predicted": 1,
+      "seconds": 0.6746734579792246
+    },
+    {
+      "id": "1_10462",
+      "condition": "noise_20db",
+      "reference_label": 1,
+      "score": 0.9334781561846448,
+      "predicted": 1,
+      "seconds": 0.6590957919834182
+    }
+  ]
+}

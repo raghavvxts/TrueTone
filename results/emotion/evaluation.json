@@ -1,0 +1,175 @@
+{
+  "task": "MUStARD++ Explicit_Emotion / audio only",
+  "labels": [
+    "Anger",
+    "Disgust",
+    "Excitement",
+    "Fear",
+    "Frustration",
+    "Happiness",
+    "Neutral",
+    "Sadness",
+    "Surprise"
+  ],
+  "counts": {
+    "Neutral": 438,
+    "Happiness": 244,
+    "Sadness": 149,
+    "Excitement": 115,
+    "Surprise": 101,
+    "Anger": 53,
+    "Frustration": 48,
+    "Disgust": 31,
+    "Fear": 23
+  },
+  "split": "leave-one-show-out; fixed C=0.1; no hyperparameter search",
+  "folds": [
+    {
+      "show": "BBT",
+      "train": 481,
+      "test": 716,
+      "accuracy": 0.31843575418994413
+    },
+    {
+      "show": "FRIENDS",
+      "train": 844,
+      "test": 354,
+      "accuracy": 0.2853107344632768
+    },
+    {
+      "show": "GOLDENGIRLS",
+      "train": 1162,
+      "test": 40,
+      "accuracy": 0.4
+    },
+    {
+      "show": "SARCASMOHOLICS",
+      "train": 1186,
+      "test": 14,
+      "accuracy": 0.07142857142857142
+    },
+    {
+      "show": "SV",
+      "train": 1120,
+      "test": 78,
+      "accuracy": 0.34615384615384615
+    }
+  ],
+  "metrics": {
+    "trained": {
+      "accuracy": 0.3103161397670549,
+      "macro_f1": 0.14554845419715465
+    },
+    "frozen_four_class": {
+      "accuracy": 0.3019966722129784,
+      "macro_f1": 0.11300142917711435
+    },
+    "majority": {
+      "accuracy": 0.3643926788685524,
+      "macro_f1": 0.059349593495934966
+    }
+  },
+  "log_loss": 2.719695905703603,
+  "confusion_matrix": [
+    [
+      2,
+      0,
+      9,
+      0,
+      1,
+      14,
+      21,
+      4,
+      2
+    ],
+    [
+      0,
+      0,
+      1,
+      0,
+      1,
+      6,
+      18,
+      4,
+      1
+    ],
+    [
+      1,
+      0,
+      9,
+      0,
+      1,
+      37,
+      52,
+      11,
+      4
+    ],
+    [
+      0,
+      0,
+      1,
+      0,
+      0,
+      4,
+      12,
+      5,
+      1
+    ],
+    [
+      0,
+      0,
+      2,
+      2,
+      1,
+      16,
+      21,
+      4,
+      2
+    ],
+    [
+      3,
+      0,
+      23,
+      1,
+      0,
+      70,
+      117,
+      28,
+      2
+    ],
+    [
+      6,
+      0,
+      21,
+      0,
+      1,
+      103,
+      244,
+      53,
+      10
+    ],
+    [
+      0,
+      0,
+      11,
+      0,
+      3,
+      44,
+      52,
+      36,
+      3
+    ],
+    [
+      1,
+      0,
+      7,
+      0,
+      2,
+      18,
+      52,
+      10,
+      11
+    ]
+  ],
+  "artifact_sha256": "671689f400339c0de10ebf99706ce8e5e0f0d4edb9dd8a2e1c9a3bdbd94c27b1"
+}

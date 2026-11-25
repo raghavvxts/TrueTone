@@ -139,3 +139,17 @@ The final deck retains the supplied design, cover, team details and public repos
 - [MUStARD++ video mirror](https://huggingface.co/datasets/sifan077/MUStARD_plus_plus)
 
 Dataset and pretrained models retain upstream terms. The repository contains final LR weights, code, PPTX and paper PDF; it does not bundle source videos or frozen encoder checkpoints.
+
+## App audit and local showcase clips
+
+The interface verifies MUStARD++ dataset identity and rejects the archived MUStARD weights. See the [app audit and improvement plan](results/app-audit/README.md) and [nine-emotion training results](results/emotion/README.md). The new emotion head is an experimental opt-in candidate; the default detector is unchanged.
+
+After preparing the dataset, run `.venv/bin/python scripts/prepare_demos.py`, then restart the app. Expand **Try a MUStARD++ dataset clip** to load one of four local audio examples with its reference transcript. These clips were seen during final training and demonstrate playback only; they are not an accuracy benchmark. Personal recordings are excluded. `.venv/bin/python scripts/check_demo_robustness.py` checks volume/noise stability using those same examples.
+
+WAV, MP3 and M4A uploads use SoundFile or the bundled `imageio-ffmpeg` decoder; a separate system ffprobe installation is not required. Automatic transcripts should always be reviewed.
+
+### Speaker-separated microphone training
+
+The [private recording and training protocol](docs/microphone-study.md) implements consent/label validation, speaker-disjoint train/calibration/test partitions, training-only gain/noise augmentation, temperature calibration, and comparisons against the existing models. Run `experiment/microphone_training.py --init` to create a private manifest, then fill it with consented recordings and independent human labels before training. Candidates stay local and never automatically replace the app. Synthetic workflow tests are not microphone accuracy results.
+
+The nine-class candidate is selectable under **Adjust transcript or model → Emotion model → MUStARD++ nine-class (experimental)** after restarting the app. Existing four-class remains default. Candidate integrity is checked; selecting it changes displayed emotion scores only, not sarcasm predictions. [Generated-audio checks](results/app-audit/generated_audio.json) cover 64 synthetic inference requests, not human accuracy. No microphone-adapted model exists until the private manifest contains consented, human-labelled recordings and its training/evaluation completes.

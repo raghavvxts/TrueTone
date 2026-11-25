@@ -30,6 +30,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKUIDelegate, WKNaviga
         appMenu.addItem(withTitle: "Close Window", action: #selector(closeWindow), keyEquivalent: "w")
         appMenu.addItem(withTitle: "Quit TrueTone", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         item.submenu = appMenu
+        let editItem = NSMenuItem(title: "Edit", action: nil, keyEquivalent: "")
+        let editMenu = NSMenu(title: "Edit")
+        for (title, action, key) in [("Cut", #selector(NSText.cut(_:)), "x"),
+                                     ("Copy", #selector(NSText.copy(_:)), "c"),
+                                     ("Paste", #selector(NSText.paste(_:)), "v"),
+                                     ("Select All", #selector(NSText.selectAll(_:)), "a")] {
+            editMenu.addItem(withTitle: title, action: action, keyEquivalent: key)
+        }
+        editItem.submenu = editMenu
+        menu.addItem(editItem)
         NSApp.mainMenu = menu
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 1120, height: 850),
                           styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)

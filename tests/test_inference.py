@@ -59,6 +59,33 @@ class InferenceTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             describe_voice([[float('nan')]*4], labels, {})
 
+    def test_audio_files_decode_without_system_ffprobe(self):
+        import subprocess
+        import imageio_ffmpeg
+        import soundfile as sf
+        from gradio.data_classes import FileData
+        from app import create_app
+        app = create_app()
+        component = next(b for b in app.blocks.values() if b.__class__.__name__ == 'Audio')
+        wave = .2*np.sin(2*np.pi*180*np.arange(32000)/16000)
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp)/'tone.wav'
+            sf.write(source, wave, 16000)
+            for suffix in ('wav', 'mp3', 'm4a'):
+                path = source if suffix == 'wav' else Path(temp)/f'tone.{suffix}'
+                if suffix != 'wav':
+                    subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), '-v', 'error', '-y',
+                                    '-i', str(source), str(path)], check=True)
+                with patch('gradio.processing_utils.audio_from_file', side_effect=AssertionError('system decoder used')):
+                    self.assertEqual(component.preprocess(FileData(path=str(path))), str(path))
+                decoded = prepare_audio(path)
+                self.assertTrue(1.9*16000 <= len(decoded) <= 2.1*16000)
+                self.assertTrue(np.isfinite(decoded).all())
+                self.assertGreater(float(np.std(decoded)), .01)
+            source.write_bytes(b'not an audio file')
+            with self.assertRaisesRegex(ValueError, 'Could not decode'):
+                prepare_audio(source)
+
     def test_contrast_flag_does_not_override_classifier_score(self):
         self.assertEqual(cue_contrast(.95, -.98), 'Positive wording / negative vocal delivery')
         self.assertEqual(cue_contrast(-.8, .9), 'Negative wording / positive vocal delivery')
@@ -79,6 +106,7 @@ class InferenceTests(unittest.TestCase):
     def test_frozen_components_reuse_local_weights_and_fallback(self):
         from inference import pretrained_component, CachedPretrained
         pretrained_component.cache_clear()
+
         factory = Mock()
         with patch.dict('sys.modules', {'transformers': SimpleNamespace(AutoModel=factory)}):
             first = CachedPretrained('AutoModel').from_pretrained('checkpoint')
@@ -89,6 +117,24 @@ class InferenceTests(unittest.TestCase):
             pretrained_component('AutoModel', 'new-checkpoint')
             self.assertEqual(factory.from_pretrained.call_count, 2)
             factory.from_pretrained.assert_called_with('new-checkpoint')
+        pretrained_component.cache_clear()
+
+    def test_partial_tokenizer_cache_downloads_missing_vocabulary(self):
+        from inference import pretrained_component
+        pretrained_component.cache_clear()
+        empty = SimpleNamespace(vocab_size=0)
+        complete = SimpleNamespace(vocab_size=50257)
+        factory = Mock()
+        factory.from_pretrained.side_effect = [empty, complete]
+        with patch.dict('sys.modules', {'transformers': SimpleNamespace(AutoTokenizer=factory)}):
+            self.assertIs(pretrained_component('AutoTokenizer', 'checkpoint'), complete)
+            self.assertIs(pretrained_component('AutoTokenizer', 'checkpoint'), complete)
+            self.assertEqual(factory.from_pretrained.call_args_list,
+                             [unittest.mock.call('checkpoint', local_files_only=True),
+                              unittest.mock.call('checkpoint')])
+            factory.from_pretrained.side_effect = [empty, empty]
+            with self.assertRaisesRegex(RuntimeError, 'vocabulary could not be loaded'):
+                pretrained_component('AutoTokenizer', 'broken')
         pretrained_component.cache_clear()
 
     def test_bundle_roundtrip_and_prediction(self):
@@ -125,6 +171,8 @@ class InferenceTests(unittest.TestCase):
         app = create_app()
         audio = next(block for block in app.blocks.values() if block.__class__.__name__ == "Audio")
         self.assertEqual(audio.sources, ["microphone", "upload"])
+        self.assertEqual(audio.type, 'filepath')
+        self.assertIsNone(audio.format)
 
     def test_missing_artifact_is_actionable(self):
         with tempfile.TemporaryDirectory() as directory:

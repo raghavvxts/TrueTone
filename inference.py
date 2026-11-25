@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import tempfile
 from collections import Counter
 from functools import lru_cache
@@ -51,9 +52,15 @@ def pretrained_component(class_name, name):
     import transformers
     factory = getattr(transformers, class_name)
     try:
-        return factory.from_pretrained(name, local_files_only=True)
+        component = factory.from_pretrained(name, local_files_only=True)
+        # Some tokenizers silently construct an empty vocabulary from a partial cache.
+        if class_name == 'AutoTokenizer' and component.vocab_size == 0:
+            raise OSError('Tokenizer vocabulary is missing from the local cache.')
     except OSError:
-        return factory.from_pretrained(name)
+        component = factory.from_pretrained(name)
+    if class_name == 'AutoTokenizer' and component.vocab_size == 0:
+        raise RuntimeError(f'Tokenizer vocabulary could not be loaded for {name}. Check the download and retry.')
+    return component
 
 
 class CachedPretrained:
@@ -76,9 +83,31 @@ def feature_runtime(cache_dir):
     return namespace
 
 
+def read_audio_file(path):
+    """Decode uploads without requiring system ffmpeg/ffprobe on a GUI app's PATH."""
+    try:
+        with sf.SoundFile(path) as source:
+            if not 8000 <= source.samplerate <= 192000 or source.channels not in (1, 2):
+                raise ValueError('Use mono or stereo audio sampled between 8 and 192 kHz.')
+            if not 1 <= len(source) / source.samplerate <= 30:
+                raise ValueError('Use a recording between 1 and 30 seconds.')
+            return source.samplerate, source.read(dtype='float32')
+    except sf.LibsndfileError:
+        import imageio_ffmpeg
+        try:
+            decoded = subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), '-nostdin', '-v', 'error',
+                '-i', str(path), '-t', '31', '-ac', '1', '-ar', '16000',
+                '-f', 'f32le', 'pipe:1'], capture_output=True, check=True, timeout=30)
+        except (subprocess.SubprocessError, OSError) as error:
+            raise ValueError('Could not decode this audio file. Upload a valid WAV, MP3 or M4A recording.') from error
+        return 16000, np.frombuffer(decoded.stdout, dtype='<f4')
+
+
 def prepare_audio(audio):
     if audio is None:
         raise ValueError('Record or upload an audio clip first.')
+    if isinstance(audio, (str, Path)):
+        audio = read_audio_file(audio)
     if not isinstance(audio, (tuple, list)) or len(audio) != 2:
         raise ValueError('Use a valid audio recording.')
     sr, raw = audio
@@ -113,6 +142,9 @@ def prepare_audio(audio):
 def describe_voice(emotion, labels, prosody):
     """Describe delivery using the existing emotion encoder, without identity guesses."""
     names = {'neu': 'Neutral', 'hap': 'Happy', 'ang': 'Angry', 'sad': 'Sad'}
+    experimental = len(labels) == 9
+    if experimental:
+        names = {label: label for label in ['Anger', 'Disgust', 'Excitement', 'Fear', 'Frustration', 'Happiness', 'Neutral', 'Sadness', 'Surprise']}
     values = np.asarray(emotion, dtype=float).reshape(-1)
     if (len(values) != len(labels) or set(labels) != set(names) or
             not np.isfinite(values).all() or np.any(values < 0) or
@@ -128,8 +160,9 @@ def describe_voice(emotion, labels, prosody):
     pace = prosody.get('words_per_sec', 0) * 60
     description = (f'### Voice category estimate: {title}\n'
                    f'**Top emotion score:** {values[best]:.1%}\n\n'
-                   f'{pitch_text} · {pace:.0f} words/min estimated from transcript\n\n'
-                   'Closest match among neutral, happy, angry and sad. Frustration is not a supported class. '
+                   f'{pitch_text} · {pace:.0f} words/min estimated from transcript\n\n' +
+                   ('Experimental MUStARD++ nine-class surface-emotion head; not validated on live microphone speakers. ' if experimental else
+                    'Closest match among neutral, happy, angry and sad. Frustration is not a supported class. ') +
                    'These uncalibrated scores do not establish the speaker’s feelings.')
     return description, {names[label]: float(value) for label, value in zip(labels, values)}
 
@@ -221,7 +254,9 @@ class Predictor:
         if self.bundle.get('version') != 1 or self.bundle.get('feature_signature') != feature_signature():
             raise RuntimeError('Feature code has changed. Run scripts/prepare_live_model.py again.')
 
-    def predict(self, audio, transcript='', model_name='Text + speech', progress=lambda value, desc: None):
+    def predict(self, audio, transcript='', model_name='Text + speech', progress=lambda value, desc: None, emotion_mode='Existing four-class'):
+        if emotion_mode not in ['Existing four-class', 'MUStARD++ nine-class (experimental)']:
+            raise ValueError('Choose a supported emotion model.')
         if model_name not in BLOCKS:
             raise ValueError('Choose a supported model.')
         if len(transcript or '') > 2000:
@@ -263,5 +298,22 @@ class Predictor:
             progress(.95, desc='Running the trained classifier')
             probability = predict_features(self.bundle, features, model_name)
         progress(1, desc='Complete')
+        if emotion_mode == 'MUStARD++ nine-class (experimental)':
+            from experiment.train_emotion import features as emotion_features
+            head = emotion_candidate()
+            emotion = head['model'].predict_proba(emotion_features(features))
+            labels = list(head['model'].classes_)
         voice, emotion_scores = describe_voice(emotion, labels, prosody)
         return probability, transcript, len(samples)/16000, voice, emotion_scores, contrast
+
+
+@lru_cache(maxsize=1)
+def emotion_candidate():
+    artifact = ROOT/'models/truetone_emotion.joblib'
+    report = json.loads((ROOT/'results/emotion/evaluation.json').read_text())
+    if hashlib.sha256(artifact.read_bytes()).hexdigest() != report['artifact_sha256']:
+        raise RuntimeError('Experimental emotion artifact integrity check failed.')
+    head = joblib.load(artifact)
+    if head.get('feature_signature') != feature_signature() or head.get('training_examples') != 1202:
+        raise RuntimeError('Experimental emotion model is incompatible with current features.')
+    return head
