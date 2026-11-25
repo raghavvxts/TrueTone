@@ -1,0 +1,329 @@
+{
+  "note": "18 labelled MUStARD++ training examples, chosen by annotation/ID/duration/content, not prediction success. Reference transcripts supplied. Mismatches preserved. This is not held-out accuracy or ASR verification.",
+  "checks": [
+    {
+      "id": "1_1484",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Anger",
+      "mode": "Existing four-class",
+      "score": 0.16363745468911461,
+      "predicted_sarcasm": 0,
+      "predicted_emotion": "Angry"
+    },
+    {
+      "id": "1_1484",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Anger",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.16363745468911461,
+      "predicted_sarcasm": 0,
+      "predicted_emotion": "Anger"
+    },
+    {
+      "id": "2_183",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Anger",
+      "mode": "Existing four-class",
+      "score": 0.5930578890875093,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "2_183",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Anger",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.5930578890875093,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Anger"
+    },
+    {
+      "id": "1_11485",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Disgust",
+      "mode": "Existing four-class",
+      "score": 0.0906164393283246,
+      "predicted_sarcasm": 0,
+      "predicted_emotion": "Angry"
+    },
+    {
+      "id": "1_11485",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Disgust",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.0906164393283246,
+      "predicted_sarcasm": 0,
+      "predicted_emotion": "Disgust"
+    },
+    {
+      "id": "1_S12E04_076",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Disgust",
+      "mode": "Existing four-class",
+      "score": 0.8320491324313337,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "1_S12E04_076",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Disgust",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.8320491324313337,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Disgust"
+    },
+    {
+      "id": "1_1001",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Excitement",
+      "mode": "Existing four-class",
+      "score": 0.7170185183901883,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Happy"
+    },
+    {
+      "id": "1_1001",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Excitement",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.7170185183901883,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Excitement"
+    },
+    {
+      "id": "1_11773",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Excitement",
+      "mode": "Existing four-class",
+      "score": 0.6831561838407276,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "1_11773",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Excitement",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.6831561838407276,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Excitement"
+    },
+    {
+      "id": "1_11201",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Fear",
+      "mode": "Existing four-class",
+      "score": 0.5407796161745813,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "1_11201",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Fear",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.5407796161745813,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Fear"
+    },
+    {
+      "id": "1_S11E06_410",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Fear",
+      "mode": "Existing four-class",
+      "score": 0.686719278620422,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "1_S11E06_410",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Fear",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.686719278620422,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Fear"
+    },
+    {
+      "id": "1_10859",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Frustration",
+      "mode": "Existing four-class",
+      "score": 0.19383347086866504,
+      "predicted_sarcasm": 0,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "1_10859",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Frustration",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.19383347086866504,
+      "predicted_sarcasm": 0,
+      "predicted_emotion": "Frustration"
+    },
+    {
+      "id": "2_370",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Frustration",
+      "mode": "Existing four-class",
+      "score": 0.6748191308643992,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "2_370",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Frustration",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.6748191308643992,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Frustration"
+    },
+    {
+      "id": "1_11051",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Happiness",
+      "mode": "Existing four-class",
+      "score": 0.6380904757372106,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "1_11051",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Happiness",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.6380904757372106,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Happiness"
+    },
+    {
+      "id": "1_10829",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Happiness",
+      "mode": "Existing four-class",
+      "score": 0.7116703152164958,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "1_10829",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Happiness",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.7116703152164958,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Happiness"
+    },
+    {
+      "id": "1_11120",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Neutral",
+      "mode": "Existing four-class",
+      "score": 0.5542959246858692,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "1_11120",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Neutral",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.5542959246858692,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "1_10495",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Neutral",
+      "mode": "Existing four-class",
+      "score": 0.5380654422376887,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Angry"
+    },
+    {
+      "id": "1_10495",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Neutral",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.5380654422376887,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "1_10853",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Sadness",
+      "mode": "Existing four-class",
+      "score": 0.06991091387012856,
+      "predicted_sarcasm": 0,
+      "predicted_emotion": "Angry"
+    },
+    {
+      "id": "1_10853",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Sadness",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.06991091387012856,
+      "predicted_sarcasm": 0,
+      "predicted_emotion": "Sadness"
+    },
+    {
+      "id": "1_10748",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Sadness",
+      "mode": "Existing four-class",
+      "score": 0.7573706849905072,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "1_10748",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Sadness",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.7573706849905072,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Sadness"
+    },
+    {
+      "id": "1_11046",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Surprise",
+      "mode": "Existing four-class",
+      "score": 0.44483490175693147,
+      "predicted_sarcasm": 0,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "1_11046",
+      "reference_sarcasm": 0,
+      "reference_emotion": "Surprise",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.44483490175693147,
+      "predicted_sarcasm": 0,
+      "predicted_emotion": "Surprise"
+    },
+    {
+      "id": "1_11098",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Surprise",
+      "mode": "Existing four-class",
+      "score": 0.6122571344771668,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Neutral"
+    },
+    {
+      "id": "1_11098",
+      "reference_sarcasm": 1,
+      "reference_emotion": "Surprise",
+      "mode": "MUStARD++ nine-class (experimental)",
+      "score": 0.6122571344771668,
+      "predicted_sarcasm": 1,
+      "predicted_emotion": "Surprise"
+    }
+  ]
+}

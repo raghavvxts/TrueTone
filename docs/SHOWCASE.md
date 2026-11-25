@@ -9,7 +9,7 @@
 ## Suggested walkthrough
 
 1. Show the README's final/experimental table and the model manifest: 1,202 MUStARD++ targets, balanced sarcasm classes, frozen encoders plus logistic regression.
-2. Open a prepared dataset clip under the collapsed examples panel. Explain that its reference transcript is supplied and it was seen during the final refit. This demonstrates the pipeline, not generalization.
+2. Expand **Showcase demos · sarcasm and emotions**, choose one of 18 recordings and click **Load selected demo**. Play it in the audio player, then analyze. Explain that its reference transcript is supplied and it was seen during the final refit. This demonstrates the pipeline, not generalization.
 3. Clear. Invite a fresh 3–10 second English recording. Keep ordinary volume and laptop distance, stop, and analyze.
 4. Inspect the transcript before interpreting the prediction. If misheard, enter the exact spoken words and rerun. State that this corrected-transcript run is different from fully automatic inference.
 5. Show the sarcasm estimate and voice category separately. A high probability can be wrong; emotion labels describe model matches, not a person's verified feelings.
@@ -23,4 +23,4 @@ Do not relabel their recording using the model output or retrain on it during ev
 
 ## What is currently verified
 
-The latest recorded checks include 31 Python tests, two JavaScript theme tests, both emotion modes through the app API, and 64 generated-audio inference requests. Synthetic checks are not human accuracy measurements. Earlier built-in microphone capture was verified; the new experimental controls and clear-during-analysis behavior still require their dedicated visual replay. See the app audit for details and dates.
+The latest recorded checks include 32 Python tests, two JavaScript theme tests, both emotion modes through the app API, and 64 generated-audio inference requests. Synthetic checks are not human accuracy measurements. Earlier built-in microphone capture was verified; the showcase selector, loading, playback, experimental mode and completed analysis have now been visually checked. Clear-during-analysis still requires its dedicated replay. See the app audit for details and dates.

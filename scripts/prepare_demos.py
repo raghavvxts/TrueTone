@@ -1,27 +1,32 @@
-"""Prepare local dataset playback examples, chosen without checking model predictions."""
+"""Prepare local showcase clips by annotation, never by prediction correctness."""
 import json
 from pathlib import Path
+import re
 import shutil
 import pandas as pd
 import soundfile as sf
 ROOT=Path(__file__).resolve().parents[1]
+# Keep short classroom examples; selection never examines model scores.
+EXCLUDE=re.compile(r'\b(fuck|shit|bitch|sex|pervert|ass|damn|hell|bastard|kill|dead|fat|bed|pants|genital|cheating|cop a feel)\b',re.I)
+
+def select_examples(rows):
+    examples=[]
+    for (emotion,label),part in rows.groupby(['Explicit_Emotion','label'],sort=True):
+        for row in part.sort_values('id').itertuples():
+            info=sf.info(row.wav)
+            if not 2<=info.duration<=10 or len(row.utterance)>160 or EXCLUDE.search(row.utterance):continue
+            examples.append(dict(id=row.id,file=f'{row.id}.wav',transcript=row.utterance,label=int(label),
+                                 emotion=emotion,show=row.show,duration=info.duration,source=row.wav,
+                                 note='Seen in final refit; dataset annotation is not a model prediction'))
+            break
+    return examples
 
 def main():
     rows=pd.read_csv(ROOT/'truetone/pp/metadata.csv')
     out=ROOT/'truetone/demos';out.mkdir(exist_ok=True)
-    examples=[]
-    for label in (0,1):
-        selected=0
-        for row in rows[rows.label==label].sort_values('id').itertuples():
-            info=sf.info(row.wav)
-            if not 3<=info.duration<=10:continue
-            file=f'{"sarcastic" if label else "non-sarcastic"}-{selected+1}.wav'
-            shutil.copyfile(row.wav,out/file)
-            examples.append(dict(id=row.id,file=file,transcript=row.utterance,label=label,show=row.show,
-                                 note='Seen in final refit; playback demonstration only'))
-            selected+=1
-            if selected==2:break
-        assert selected==2
+    examples=select_examples(rows)
+    assert len(examples)==18 and {x['label'] for x in examples}=={0,1}
+    for row in examples:shutil.copyfile(row.pop('source'),out/row['file'])
     (out/'manifest.json').write_text(json.dumps(examples,indent=2)+'\n')
-    print('Prepared four local public-dataset demos; no personal audio used.')
+    print('Prepared',len(examples),'local MUStARD++ clips: both sarcasm labels across nine surface emotions.')
 if __name__=='__main__':main()

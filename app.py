@@ -2,6 +2,7 @@
 from functools import lru_cache
 import base64
 import hashlib
+import json
 import os
 from pathlib import Path
 
@@ -81,15 +82,6 @@ def create_app():
                     submit = gr.Button('Analyze recording', variant='primary', scale=3, min_width=180, elem_id='analyze')
                     clear = gr.Button('Clear', scale=1, min_width=80, elem_id='clear')
                 gr.Markdown('Stop recording before analyzing. Allow microphone access in your browser. Use the transcript option to correct any speech recognition errors.')
-                demo_manifest = Path(__file__).resolve().parent / 'truetone/demos/manifest.json'
-                if demo_manifest.exists():
-                    import json
-                    demo_rows = json.loads(demo_manifest.read_text())
-                    with gr.Accordion('Try a MUStARD++ dataset clip', open=False):
-                        gr.Examples(examples=[[str(demo_manifest.parent / row['file']), row['transcript']]
-                                              for row in demo_rows], inputs=[audio, transcript],
-                                    label='Reference transcript supplied', cache_examples=False)
-                        gr.Markdown('Dataset playback examples seen during final training; these are not an accuracy test. Clear before recording your own voice.')
             with gr.Column(min_width=280, elem_id='output-pane'):
                 gr.HTML('<div class="tt-section-heading"><h2>The model’s reading</h2><span>Model estimate</span></div>')
                 result = gr.Markdown(EMPTY_RESULT, elem_id='result')
@@ -98,17 +90,44 @@ def create_app():
                 with gr.Accordion('Voice emotion scores', open=False, elem_id='emotion-details'):
                     emotion_scores = gr.Label(label='Voice emotion scores', num_top_classes=9, show_heading=False, container=False, elem_id='emotion-scores')
                 recognized = gr.Textbox(label='Transcript used', placeholder='The spoken words will appear here.', interactive=False, lines=2, elem_id='recognized')
+        demo_manifest = Path(__file__).resolve().parent / 'truetone/demos/manifest.json'
+        demo_rows = json.loads(demo_manifest.read_text()) if demo_manifest.exists() else []
+        with gr.Accordion('Showcase demos · sarcasm and emotions', open=False, elem_id='showcase-demos'):
+            gr.Markdown('Choose a labelled MUStARD++ recording, load it, listen, then click **Analyze recording**. '
+                        'These clips were seen during final training. Annotation labels are references, not guaranteed predictions. '
+                        'Reference transcripts are supplied; select the experimental emotion model to explore all nine labels.')
+            demo_choice = gr.Dropdown(choices=[(f"{'Sarcastic' if row['label'] else 'Non-sarcastic'} · {row.get('emotion', 'Surface emotion unavailable')} · {row['id']}", row['id']) for row in demo_rows],
+                                      label='Recording and dataset labels', value=None, interactive=bool(demo_rows))
+            load_demo_button = gr.Button('Load selected demo', interactive=bool(demo_rows))
+            demo_reference = gr.Markdown('No demo selected.' if demo_rows else
+                'Local demo audio is not installed. Prepare the dataset, run scripts/prepare_demos.py, and restart the app.')
         gr.HTML("""<div class="tt-footnote"><p>MUStARD++ model connected · 1,202 training utterances · frozen encoders + logistic regression.</p>
           <p class="tt-local">Audio processed locally<br>First use downloads pretrained models</p></div>""")
         with gr.Accordion('About the model and its limits', open=False, elem_id='method'):
             gr.Markdown('The app uses classifiers fitted on all 1,202 MUStARD++ target utterances (601 sarcastic and 601 non-sarcastic). MUStARD is retained as the research baseline. Held-out evaluation is separate from these final serving refits.\n\nLocal speech recognition supplies the transcript. The research notebook’s frozen encoders extract speech, prosody, emotion, text and sentiment features. A final logistic-regression classifier predicts sarcasm at a 0.5 threshold. Scores are uncalibrated. The speech reference also uses transcript word counts for speaking-rate features. This is a recording-based demo, not continuous streaming.\n\n[Project and evaluation results](https://github.com/raghavvxts/TrueTone)')
         outputs = [scores, recognized, result, voice, emotion_scores]
         prediction = submit.click(analyze, inputs=[audio, transcript, model, emotion_mode], outputs=outputs, api_name='analyze', concurrency_limit=1, show_progress_on=[result])
-        audio.change(lambda: ('', None, '', EMPTY_RESULT, '', None), outputs=[transcript, *outputs], cancels=[prediction], queue=False)
+        audio.input(lambda: ('', None, '', EMPTY_RESULT, '', None, 'No demo selected.'),
+                    outputs=[transcript, *outputs, demo_reference], cancels=[prediction], queue=False)
         for control in (transcript, model, emotion_mode):
             control.input(lambda: (None, '', EMPTY_RESULT, '', None), outputs=outputs, cancels=[prediction], queue=False)
-        clear.click(lambda: (None, '', None, '', EMPTY_RESULT, '', None),
-                    outputs=[audio, transcript, *outputs], cancels=[prediction], queue=False)
+        def load_demo(clip_id):
+            row = next((row for row in demo_rows if row['id'] == clip_id), None)
+            if row is None:
+                raise gr.Error('Choose a showcase recording first.')
+            path = demo_manifest.parent / row['file']
+            if not path.is_file():
+                raise gr.Error('Demo audio is missing. Run scripts/prepare_demos.py again.')
+            reference = (f"**Dataset annotation:** {'Sarcastic' if row['label'] else 'Non-sarcastic'} · "
+                         f"**Surface emotion:** {row.get('emotion', 'Unavailable')} · **Source:** {row['show']} · **ID:** {row['id']}\n\n"
+                         'Reference transcript loaded. Listen using the audio player above, then analyze. '
+                         'Model outputs may disagree with these annotations. This is not held-out accuracy.')
+            return str(path), row['transcript'], None, '', EMPTY_RESULT, '', None, reference
+        load_demo_button.click(load_demo, inputs=[demo_choice],
+                               outputs=[audio, transcript, *outputs, demo_reference],
+                               cancels=[prediction], queue=False, api_name='load_demo')
+        clear.click(lambda: (None, '', None, '', EMPTY_RESULT, '', None, 'No demo selected.'),
+                    outputs=[audio, transcript, *outputs, demo_reference], cancels=[prediction], queue=False)
     return demo
 
 

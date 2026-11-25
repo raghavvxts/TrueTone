@@ -79,7 +79,7 @@ Run automated checks:
 node --test tests/test_theme.cjs
 ```
 
-Optional local dataset demos require preparing the dataset first; follow the full project guide, then run `.venv/bin/python scripts/prepare_demos.py` and restart the app. Expand **Try a MUStARD++ dataset clip**. These four examples were seen during final training and are labelled accordingly.
+Optional local dataset demos require preparing the dataset first; follow the full project guide, then run `.venv/bin/python scripts/prepare_demos.py` and restart the app. Expand **Showcase demos · sarcasm and emotions**. These 18 examples were seen during final training and are labelled accordingly.
 
 ## Team
 

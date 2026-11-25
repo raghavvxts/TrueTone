@@ -12,4 +12,4 @@ class AppDatasetTests(unittest.TestCase):
                 predictor()
     def test_demo_examples_build_without_prediction_cache(self):
         app=create_app()
-        self.assertTrue(any(getattr(b,'value',None)=='Try a MUStARD++ dataset clip' or getattr(b,'label',None)=='Try a MUStARD++ dataset clip' for b in app.blocks.values()))
+        self.assertTrue(any(getattr(b,'value',None)=='Showcase demos · sarcasm and emotions' or getattr(b,'label',None)=='Showcase demos · sarcasm and emotions' for b in app.blocks.values()))

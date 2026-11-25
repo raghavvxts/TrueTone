@@ -144,7 +144,7 @@ Dataset and pretrained models retain upstream terms. The repository contains fin
 
 The interface verifies MUStARD++ dataset identity and rejects the archived MUStARD weights. See the [app audit and improvement plan](../results/app-audit/README.md) and [nine-emotion training results](../results/emotion/README.md). The new emotion head is an experimental opt-in candidate; the default detector is unchanged.
 
-After preparing the dataset, run `.venv/bin/python scripts/prepare_demos.py`, then restart the app. Expand **Try a MUStARD++ dataset clip** to load one of four local audio examples with its reference transcript. These clips were seen during final training and demonstrate playback only; they are not an accuracy benchmark. Personal recordings are excluded. `.venv/bin/python scripts/check_demo_robustness.py` checks volume/noise stability using those same examples.
+After preparing the dataset, run `.venv/bin/python scripts/prepare_demos.py`, then restart the app. Expand **Showcase demos · sarcasm and emotions** to load one of 18 local audio examples with its reference transcript. These clips were seen during final training and demonstrate playback only; they are not an accuracy benchmark. Personal recordings are excluded. `.venv/bin/python scripts/check_demo_robustness.py` checks volume/noise stability using those same examples.
 
 WAV, MP3 and M4A uploads use SoundFile or the bundled `imageio-ffmpeg` decoder; a separate system ffprobe installation is not required. Automatic transcripts should always be reviewed.
 
