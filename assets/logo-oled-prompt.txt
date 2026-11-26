@@ -1,5 +1,0 @@
-Tool: built-in image_gen imagegen, edit mode.
-Edit target: assets/archive/logo-forest.png
-Output: assets/logo.png
-
-Use case: precise-object-edit. Edit target: the referenced TrueTone logo. Create its premium OLED-dark monochrome version for a macOS app icon, website header, browser favicon and Apple touch icon. Preserve the same exact speech-bubble outline, tail silhouette, seven rounded waveform bars, their placement, relative heights, spacing, stroke thickness, scale and centered square composition. Change only the palette and finish: replace every forest-green background pixel, including inside the bubble, with solid opaque pure OLED black #000000; replace the ivory symbol and orange accent bar with crisp clean near-white #F5F5F5. All seven bars should now match near-white. Flat, sharp, minimal, high contrast. No green cast, no orange, no gradients, no grain, no texture, no glow, no shadows, no new elements, no added border, no text, no watermark. Keep the square canvas and original generous padding. Output one finished square logo asset, not a mockup or sheet.

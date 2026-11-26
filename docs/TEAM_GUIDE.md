@@ -40,7 +40,7 @@ Run commands from the repository root. Start with the root README; use PROJECT_G
 | Collect/train microphone candidates | Follow [microphone protocol](microphone-study.md) |
 | Maintain final documents | scripts/update_presentation.py and scripts/build_paper.py; render and inspect after changes |
 
-The requirements-ui.txt file is the normal installation entry point. requirements-verified.txt records an older local dependency snapshot, not a universal cross-platform lockfile.
+The requirements-ui.txt file is the normal installation entry point. docs/archive/requirements-verified.txt records an older local dependency snapshot, not a universal cross-platform lockfile.
 
 ## Keep final results reproducible
 

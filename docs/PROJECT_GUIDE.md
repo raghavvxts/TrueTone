@@ -117,7 +117,7 @@ For a final refit from already prepared MUStARD++ features, without rerunning ev
 .venv/bin/python scripts/prepare_live_model.py
 ```
 
-Alternatively, run all cells of `TrueTone.ipynb`. For headless execution, register the kernel with `.venv/bin/python -m ipykernel install --user --name truetone`, then run `.venv/bin/python scripts/run_notebook.py`. The executed notebook stays under ignored `truetone/`.
+For full reproduction, set `RETRAIN = True` in `TrueTone.ipynb` before running all cells. Review mode is the default and does not retrain. For headless execution, register the kernel with `.venv/bin/python -m ipykernel install --user --name truetone`, then run `.venv/bin/python scripts/run_notebook.py --retrain`. Omit `--retrain` for review-only execution. The executed notebook stays under ignored `truetone/`.
 
 `TRUETONE_PORT` overrides the standalone port. `TRUETONE_MODEL` can select a trusted local model bundle. `HF_HOME` controls the pretrained-model cache; default is `truetone/hf`. Only load trusted joblib files.
 
