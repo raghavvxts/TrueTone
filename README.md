@@ -61,7 +61,7 @@ The final classifier uses target audio and transcripts, not video frames or prec
 
 The paired shared-target experiment reports **F1 0.761** for MUStARD++ versus **0.744** for MUStARD; corresponding MUStARD++ accuracy is **0.751**. The difference's 95% interval includes zero. These results do not establish accuracy on your microphone or a new speaker. Training-set demos and generated speech are not independent accuracy tests.
 
-The PPT and paper describe the final sarcasm study. Later experimental emotion-head and microphone-workflow results are documented separately; do not present them as validated final-paper results.
+The PPT describes the final sarcasm study. The updated paper includes that study, both dataset baselines, and separate sections for the experimental emotion head and application checks. It clearly identifies the unrun microphone-adaptation study and does not present synthetic demos as accuracy evidence.
 
 ## For the team
 

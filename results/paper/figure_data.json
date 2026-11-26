@@ -1,0 +1,36 @@
+{
+  "sarcasm_confusion_matrices": {
+    "MUStARD": [
+      [
+        252,
+        92
+      ],
+      [
+        86,
+        258
+      ]
+    ],
+    "MUStARD++": [
+      [
+        245,
+        99
+      ],
+      [
+        72,
+        272
+      ]
+    ]
+  },
+  "emotion_counts": {
+    "Neutral": 438,
+    "Happiness": 244,
+    "Sadness": 149,
+    "Excitement": 115,
+    "Surprise": 101,
+    "Anger": 53,
+    "Frustration": 48,
+    "Disgust": 31,
+    "Fear": 23
+  },
+  "note": "Figures derive from saved out-of-fold predictions; no epoch loss curves or training accuracy invented."
+}

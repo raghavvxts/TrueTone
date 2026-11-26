@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-26",
+  "sources": {
+    "results/mustardpp/summary.csv": "4f3e9d56a578738895f66f3700605c1ce44385d0f5eb6c6f8213489929a519dc",
+    "results/mustardpp/predictions.csv": "2726df4fa82c895d3bbb769cf200bae8676acfbc09f9bdf349db48325a20a736",
+    "results/mustardpp/paired_bootstrap.csv": "ea3b63aeb119a4eb61fc3cf1ea61168e9c996bae89d0d3ab9998084cef2c6d1b",
+    "results/mustardpp/held_out_show.csv": "45f889e3373be3c596bdf3dab7be517fa93b9a0e3fd51149c590f8402f69453e",
+    "results/emotion/evaluation.json": "fe35652b960744928cde04b64725736436894244498780b087f884f90874e398",
+    "results/emotion/held_out_predictions.csv": "b0374d9b987513d590e3efb79300d3d37ff47b6975305fad4f8d10ec54103089",
+    "results/app-audit/upload_verification.json": "3e76372ea828cbb8a8400006d92e6bcb3dad6cf0b984f46665f0dad83d96dc71",
+    "models/manifest.json": "7fba8c6ede02b2df2d8bda6dc09de0e88ab32b70319f87903b26bf73a8425e3c"
+  },
+  "pdf_sha256": "3e877847aa81e3585ef889990e3fd5c39dbb4e4ec1bb94ca781c16fd83877ff5",
+  "pages": 5,
+  "tables": 6,
+  "figures": 4,
+  "checks": "Recomputed sarcasm metrics and emotion accuracy/macro F1; inspected all five rendered pages; no unusual blank-space characters."
+}
